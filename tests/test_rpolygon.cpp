@@ -1,5 +1,5 @@
 #include <doctest/doctest.h>  // for ResultBuilder, CHECK, Expression_lhs
-// #include <fmt/core.h>
+#include <fmt/core.h>
 #include <gsl/span>              // for span
 #include <recti/halton_int.hpp>  // for vdcorput, recti
 #include <recti/rpolygon.hpp>    // for RPolygon, RPolygon_is_clockwise, cre...
@@ -58,7 +58,7 @@ TEST_CASE("Rectilinear Polygon test (y-mono 50)") {
     auto q = Point<int>(int(hgenX()), int(hgenY()));
     // fmt::print(
     //     "  <circle cx='{}' cy='{}' r='10' fill='#BF616A' />\n", q.x(), q.y());
-    // fmt::print("</svg>\n");
+    fmt::print("</svg>\n");
 
     auto P = RPolygon<int>(S);
     CHECK(!is_anticlockwise);

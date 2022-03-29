@@ -17,6 +17,11 @@ jobs:
       - uses: xmake-io/github-action-setup-xmake@master
         with:
           xmake-version: ${{ matrix.version }}
+      - name: Install Conan
+        id: conan
+        uses: turtlebrowser/get-conan@main
+      - name: Conan version
+        run: echo "${{ steps.conan.outputs.version }}"
       - name: Run tests
         run: |
           xmake --version

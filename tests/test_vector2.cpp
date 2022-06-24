@@ -17,18 +17,18 @@ TEST_CASE("Vector2") {
     const auto p = Vector2{a, b};
     const auto q = Vector2{c, d};
 
-    CHECK(Vector2{8, 10} == (p + q));
+    CHECK_EQ(Vector2{8, 10}, (p + q));
     CHECK(Vector2{8, 2} != (p + q));
-    CHECK(Vector2{-2, -2} == (p - q));
-    CHECK(Vector2{6, 8} == (p * 2));
-    CHECK(Vector2{4, 5} == (p + q) / 2);
+    CHECK_EQ(Vector2{-2, -2}, (p - q));
+    CHECK_EQ(Vector2{6, 8}, (p * 2));
+    CHECK_EQ(Vector2{4, 5}, (p + q) / 2);
 
     CHECK(p != q);
-    CHECK(p + q == q + p);
-    CHECK(p - q == -(q - p));
-    CHECK(p * 3 == 3 * p);
-    CHECK(p + (q - p) / 2 == (p + q) / 2);  // ???
+    CHECK_EQ(p + q, q + p);
+    CHECK_EQ(p - q, -(q - p));
+    CHECK_EQ(p * 3, 3 * p);
+    CHECK_EQ(p + (q - p) / 2, (p + q) / 2);  // TODO
 
     const auto r = Vector2{-b, c};
-    CHECK((p + q) + r == p + (q + r));
+    CHECK_EQ((p + q) + r, p + (q + r));
 }

@@ -17,7 +17,7 @@ namespace recti {
      * @return false
      */
     template <typename U1, typename U2>  //
-    inline constexpr auto overlap(const U1& lhs, const U2& rhs) -> bool {
+    inline constexpr auto overlap(const U1 &lhs, const U2 &rhs) -> bool {
         if constexpr (!std::is_scalar_v<U1>) {
             return lhs.overlaps(rhs);
         } else if constexpr (!std::is_scalar_v<U2>) {
@@ -38,7 +38,7 @@ namespace recti {
      * @return false
      */
     template <typename U1, typename U2>  //
-    inline constexpr auto contain(const U1& lhs, const U2& rhs) -> bool {
+    inline constexpr auto contain(const U1 &lhs, const U2 &rhs) -> bool {
         if constexpr (!std::is_scalar_v<U1>) {
             return lhs.contains(rhs);
         } else if constexpr (!std::is_scalar_v<U2>) {
@@ -58,7 +58,7 @@ namespace recti {
      * @return constexpr auto
      */
     template <typename U1, typename U2>  //
-    inline constexpr auto intersection(const U1& lhs, const U2& rhs) {
+    inline constexpr auto intersection(const U1 &lhs, const U2 &rhs) {
         if constexpr (!std::is_scalar_v<U1>) {
             return lhs.intersection_with(rhs);
         } else if constexpr (!std::is_scalar_v<U2>) {
@@ -79,7 +79,7 @@ namespace recti {
      * @return constexpr auto
      */
     template <typename U1, typename U2>  //
-    inline constexpr auto min_dist(const U1& lhs, const U2& rhs) {
+    inline constexpr auto min_dist(const U1 &lhs, const U2 &rhs) {
         if constexpr (!std::is_scalar_v<U1>) {
             return lhs.min_dist_with(rhs);
         } else if constexpr (!std::is_scalar_v<U2>) {
@@ -99,7 +99,7 @@ namespace recti {
      * @return constexpr auto
      */
     template <typename U1, typename U2>  //
-    inline constexpr auto min_dist_change(U1& lhs, U2& rhs) {
+    inline constexpr auto min_dist_change(U1 &lhs, U2 &rhs) {
         if constexpr (!std::is_scalar_v<U1>) {
             return lhs.min_dist_change_with(rhs);
         } else if constexpr (!std::is_scalar_v<U2>) {
@@ -127,7 +127,7 @@ namespace recti {
          * @param[in] lower
          * @param[in] upper
          */
-        constexpr interval(T&& lower, T&& upper) noexcept
+        constexpr interval(T &&lower, T &&upper) noexcept
             : _lb{std::move(lower)}, _ub{std::move(upper)} {
             assert(!(_ub < _lb));
         }
@@ -138,7 +138,7 @@ namespace recti {
          * @param[in] lower
          * @param[in] upper
          */
-        constexpr interval(const T& lower, const T& upper) : _lb{lower}, _ub{upper} {
+        constexpr interval(const T &lower, const T &upper) : _lb{lower}, _ub{upper} {
             assert(!(_ub < _lb));
         }
 
@@ -147,7 +147,7 @@ namespace recti {
          *
          * @param[in] c
          */
-        explicit constexpr interval(const T& c) : _lb{c}, _ub{c} {}
+        explicit constexpr interval(const T &c) : _lb{c}, _ub{c} {}
 
         /**
          * @brief Assignment operator
@@ -155,7 +155,7 @@ namespace recti {
          * @param c
          * @return interval&
          */
-        constexpr auto operator=(const T& c) -> interval& {
+        constexpr auto operator=(const T &c) -> interval & {
             this->_lb = this->_ub = c;
             return *this;
         }
@@ -165,14 +165,14 @@ namespace recti {
          *
          * @return const T&
          */
-        [[nodiscard]] constexpr auto lb() const -> const T& { return this->_lb; }
+        [[nodiscard]] constexpr auto lb() const -> const T & { return this->_lb; }
 
         /**
          * @brief
          *
          * @return const T&
          */
-        [[nodiscard]] constexpr auto ub() const -> const T& { return this->_ub; }
+        [[nodiscard]] constexpr auto ub() const -> const T & { return this->_ub; }
 
         /**
          * @brief
@@ -195,7 +195,7 @@ namespace recti {
          * @return false
          */
         template <typename U>  //
-        constexpr auto operator==(const interval<U>& rhs) const -> bool {
+        constexpr auto operator==(const interval<U> &rhs) const -> bool {
             return this->lb() == rhs.lb() && this->ub() == rhs.ub();
         }
 
@@ -208,7 +208,7 @@ namespace recti {
          * @return false
          */
         template <typename U>  //
-        constexpr auto operator!=(const interval<U>& rhs) const -> bool {
+        constexpr auto operator!=(const interval<U> &rhs) const -> bool {
             return !(*this == rhs);
         }
 
@@ -249,7 +249,7 @@ namespace recti {
          * @return false
          */
         template <typename U>  //
-        constexpr auto operator<(const U& rhs) const -> bool {
+        constexpr auto operator<(const U &rhs) const -> bool {
             return this->ub() < rhs;
         }
 
@@ -261,7 +261,7 @@ namespace recti {
          * @return true
          * @return false
          */
-        friend constexpr auto operator<(const T& lhs, const interval& rhs) -> bool {
+        friend constexpr auto operator<(const T &lhs, const interval &rhs) -> bool {
             return lhs < rhs.lb();
         }
 
@@ -274,7 +274,7 @@ namespace recti {
          * @return false
          */
         template <typename U>  //
-        constexpr auto operator>(const U& rhs) const -> bool {
+        constexpr auto operator>(const U &rhs) const -> bool {
             return this->lb() > rhs;
         }
 
@@ -286,7 +286,7 @@ namespace recti {
          * @return true
          * @return false
          */
-        friend constexpr auto operator>(const T& lhs, const interval& rhs) -> bool {
+        friend constexpr auto operator>(const T &lhs, const interval &rhs) -> bool {
             return rhs < lhs;
         }
 
@@ -299,7 +299,7 @@ namespace recti {
          * @return false
          */
         template <typename U>  //
-        constexpr auto operator<=(const U& rhs) const -> bool {
+        constexpr auto operator<=(const U &rhs) const -> bool {
             return !(rhs < *this);
         }
 
@@ -311,7 +311,7 @@ namespace recti {
          * @return true
          * @return false
          */
-        friend constexpr auto operator<=(const T& lhs, const interval& rhs) -> bool {
+        friend constexpr auto operator<=(const T &lhs, const interval &rhs) -> bool {
             return !(rhs < lhs);
             ;
         }
@@ -325,7 +325,7 @@ namespace recti {
          * @return false
          */
         template <typename U>  //
-        constexpr auto operator>=(const U& rhs) const -> bool {
+        constexpr auto operator>=(const U &rhs) const -> bool {
             return !(*this < rhs);
         }
 
@@ -337,7 +337,7 @@ namespace recti {
          * @return true
          * @return false
          */
-        friend constexpr auto operator>=(const T& lhs, const interval& rhs) -> bool {
+        friend constexpr auto operator>=(const T &lhs, const interval &rhs) -> bool {
             return !(lhs < rhs);
         }
 
@@ -361,7 +361,7 @@ namespace recti {
          * @param[in] alpha
          * @return interval&
          */
-        template <typename U> constexpr auto operator+=(const U& alpha) -> interval& {
+        template <typename U> constexpr auto operator+=(const U &alpha) -> interval & {
             this->_lb += alpha;
             this->_ub += alpha;
             return *this;
@@ -374,7 +374,7 @@ namespace recti {
          * @param[in] alpha
          * @return interval
          */
-        template <typename U> friend constexpr auto operator+(interval x, const U& alpha)
+        template <typename U> friend constexpr auto operator+(interval x, const U &alpha)
             -> interval {
             return x += alpha;
         }
@@ -386,7 +386,7 @@ namespace recti {
          * @param[in] x
          * @return interval
          */
-        friend constexpr auto operator+(const T& alpha, interval x) -> interval {
+        friend constexpr auto operator+(const T &alpha, interval x) -> interval {
             return x += alpha;
         }
 
@@ -396,7 +396,7 @@ namespace recti {
          * @param[in] alpha
          * @return interval&
          */
-        template <typename U> constexpr auto operator-=(const U& alpha) -> interval& {
+        template <typename U> constexpr auto operator-=(const U &alpha) -> interval & {
             this->_lb -= alpha;
             this->_ub -= alpha;
             return *this;
@@ -409,7 +409,7 @@ namespace recti {
          * @param[in] alpha
          * @return interval
          */
-        template <typename U> friend constexpr auto operator-(interval x, const U& alpha)
+        template <typename U> friend constexpr auto operator-(interval x, const U &alpha)
             -> interval {
             auto lower = x.lb() - alpha;
             auto upper = x.ub() - alpha;
@@ -422,7 +422,7 @@ namespace recti {
          * @param[in] alpha
          * @return interval&
          */
-        constexpr auto enlarge_with(const T& alpha) -> interval& {
+        constexpr auto enlarge_with(const T &alpha) -> interval & {
             this->_lb -= alpha;
             this->_ub += alpha;
             return *this;
@@ -439,7 +439,7 @@ namespace recti {
          * @return false
          */
         template <typename U>  //
-        [[nodiscard]] constexpr auto overlaps(const U& a) const -> bool {
+        [[nodiscard]] constexpr auto overlaps(const U &a) const -> bool {
             return !(*this < a || a < *this);
         }
 
@@ -452,7 +452,7 @@ namespace recti {
          * @return false
          */
         template <typename U>  //
-        [[nodiscard]] constexpr auto contains(const U& a) const -> bool {
+        [[nodiscard]] constexpr auto contains(const U &a) const -> bool {
             if constexpr (std::is_scalar_v<U>) {
                 return this->lb() <= a && a <= this->ub();
             } else {
@@ -468,7 +468,7 @@ namespace recti {
          * @return constexpr auto
          */
         template <typename U>  //
-        [[nodiscard]] constexpr auto intersection_with(const U& other) const {
+        [[nodiscard]] constexpr auto intersection_with(const U &other) const {
             if constexpr (std::is_scalar_v<U>) {
                 return interval<U>{other, other};
             } else {
@@ -484,7 +484,7 @@ namespace recti {
          * @param[in] other
          * @return constexpr auto
          */
-        template <typename U> [[nodiscard]] constexpr auto min_dist_with(const U& other) const {
+        template <typename U> [[nodiscard]] constexpr auto min_dist_with(const U &other) const {
             if (*this < other) {
                 return min_dist(this->_ub, other);
             }
@@ -501,7 +501,7 @@ namespace recti {
          * @param[in] other
          * @return constexpr auto
          */
-        template <typename U> [[nodiscard]] constexpr auto min_dist_change_with(U& other) {
+        template <typename U> [[nodiscard]] constexpr auto min_dist_change_with(U &other) {
             if (*this < other) {
                 this->_lb = this->_ub;
                 return min_dist_change(this->_ub, other);
@@ -526,7 +526,7 @@ namespace recti {
          * @param[in] I
          * @return Stream&
          */
-        template <class Stream> friend auto operator<<(Stream& out, const interval& I) -> Stream& {
+        template <class Stream> friend auto operator<<(Stream &out, const interval &I) -> Stream & {
             out << "[" << I.lb() << ", " << I.ub() << "]";
             return out;
         }
@@ -534,7 +534,7 @@ namespace recti {
 #pragma pack(pop)
 
     template <typename U1, typename U2>  //
-    inline constexpr auto enlarge(U1 lhs, const U2& rhs) {
+    inline constexpr auto enlarge(U1 lhs, const U2 &rhs) {
         if constexpr (std::is_scalar_v<U1>) {
             return interval<U1>{lhs - rhs, lhs + rhs};
         } else {

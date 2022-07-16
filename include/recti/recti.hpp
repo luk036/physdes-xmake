@@ -18,7 +18,7 @@ namespace recti {
          * @param[in] x
          * @param[in] y
          */
-        constexpr Rect(interval<T>&& x, interval<T>&& y) noexcept
+        constexpr Rect(interval<T> &&x, interval<T> &&y) noexcept
             : Point<interval<T>>{std::move(x), std::move(y)} {}
 
         /**
@@ -27,7 +27,7 @@ namespace recti {
          * @param[in] x
          * @param[in] y
          */
-        constexpr Rect(const interval<T>& x, const interval<T>& y) : Point<interval<T>>{x, y} {}
+        constexpr Rect(const interval<T> &x, const interval<T> &y) : Point<interval<T>>{x, y} {}
 
         /**
          * @brief
@@ -69,7 +69,7 @@ namespace recti {
          * @param[in] x
          * @param[in] y
          */
-        constexpr HSegment(interval<T>&& x, T&& y) noexcept
+        constexpr HSegment(interval<T> &&x, T &&y) noexcept
             : Point<interval<T>, T>{std::move(x), std::move(y)} {}
 
         /**
@@ -78,7 +78,7 @@ namespace recti {
          * @param[in] x
          * @param[in] y
          */
-        constexpr HSegment(const interval<T>& x, const T& y) : Point<interval<T>, T>{x, y} {}
+        constexpr HSegment(const interval<T> &x, const T &y) : Point<interval<T>, T>{x, y} {}
     };
 #pragma pack(pop)
 
@@ -95,7 +95,7 @@ namespace recti {
          * @param[in] x
          * @param[in] y
          */
-        constexpr VSegment(T&& x, interval<T>&& y) noexcept
+        constexpr VSegment(T &&x, interval<T> &&y) noexcept
             : Point<T, interval<T>>{std::move(x), std::move(y)} {}
 
         /**
@@ -104,7 +104,7 @@ namespace recti {
          * @param[in] x
          * @param[in] y
          */
-        constexpr VSegment(const T& x, const interval<T>& y) : Point<T, interval<T>>{x, y} {}
+        constexpr VSegment(const T &x, const interval<T> &y) : Point<T, interval<T>>{x, y} {}
     };
 #pragma pack(pop)
 

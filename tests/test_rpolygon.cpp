@@ -1,5 +1,6 @@
 #include <doctest/doctest.h>  // for ResultBuilder, CHECK, Expression_lhs
 #include <fmt/core.h>
+
 #include <gsl/span>              // for span
 #include <recti/halton_int.hpp>  // for vdcorput, recti
 #include <recti/rpolygon.hpp>    // for RPolygon, RPolygon_is_clockwise, cre...
@@ -40,7 +41,8 @@ TEST_CASE("Rectilinear Polygon test (y-mono 50)") {
     }
     auto is_anticlockwise = create_ymono_rpolygon(S.begin(), S.end());
     // fmt::print(
-    //     "\n<svg viewBox='0 0 2187 2048' xmlns='http://www.w3.org/2000/svg'>\n");
+    //     "\n<svg viewBox='0 0 2187 2048'
+    //     xmlns='http://www.w3.org/2000/svg'>\n");
     // fmt::print("  <polygon points='");
     // auto p0 = S.back();
     // for (auto&& p1 : S)

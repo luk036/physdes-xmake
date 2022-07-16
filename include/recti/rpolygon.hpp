@@ -38,7 +38,7 @@ namespace recti {
          * @param[in] rhs
          * @return constexpr Point&
          */
-        constexpr auto operator+=(const Vector2<T>& rhs) -> RPolygon& {
+        constexpr auto operator+=(const Vector2<T> &rhs) -> RPolygon & {
             this->_origin += rhs;
             return *this;
         }
@@ -67,7 +67,7 @@ namespace recti {
          * @return true
          * @return false
          */
-        template <typename U> auto contains(const Point<U>& rhs) const -> bool;
+        template <typename U> auto contains(const Point<U> &rhs) const -> bool;
 
         /**
          * @brief
@@ -93,15 +93,15 @@ namespace recti {
      * @return true
      * @return false
      */
-    template <typename FwIter> inline auto create_xmono_rpolygon(FwIter&& first, FwIter&& last)
+    template <typename FwIter> inline auto create_xmono_rpolygon(FwIter &&first, FwIter &&last)
         -> bool {
         assert(first != last);
 
         const auto leftmost = *std::min_element(first, last);
         const auto rightmost = *std::max_element(first, last);
         const auto is_anticlockwise = rightmost.y() <= leftmost.y();
-        auto r2l = [&](const auto& a) { return a.y() <= leftmost.y(); };
-        auto l2r = [&](const auto& a) { return a.y() >= leftmost.y(); };
+        auto r2l = [&](const auto &a) { return a.y() <= leftmost.y(); };
+        auto l2r = [&](const auto &a) { return a.y() >= leftmost.y(); };
         const auto middle = is_anticlockwise ? std::partition(first, last, std::move(r2l))
                                              : std::partition(first, last, std::move(l2r));
         std::sort(first, middle);
@@ -118,21 +118,21 @@ namespace recti {
      * @return true
      * @return false
      */
-    template <typename FwIter> inline auto create_ymono_rpolygon(FwIter&& first, FwIter&& last)
+    template <typename FwIter> inline auto create_ymono_rpolygon(FwIter &&first, FwIter &&last)
         -> bool {
         assert(first != last);
 
-        auto upward = [](const auto& a, const auto& b) {
+        auto upward = [](const auto &a, const auto &b) {
             return std::tie(a.y(), a.x()) < std::tie(b.y(), b.x());
         };
-        auto downward = [](const auto& a, const auto& b) {
+        auto downward = [](const auto &a, const auto &b) {
             return std::tie(a.y(), a.x()) > std::tie(b.y(), b.x());
         };
         const auto botmost = *std::min_element(first, last, upward);
         const auto topmost = *std::max_element(first, last, upward);
         const auto is_anticlockwise = topmost.x() >= botmost.x();
-        auto r2l = [&](const auto& a) { return a.x() >= botmost.x(); };
-        auto l2r = [&](const auto& a) { return a.x() <= botmost.x(); };
+        auto r2l = [&](const auto &a) { return a.x() >= botmost.x(); };
+        auto l2r = [&](const auto &a) { return a.x() <= botmost.x(); };
         const auto middle = is_anticlockwise ? std::partition(first, last, std::move(r2l))
                                              : std::partition(first, last, std::move(l2r));
         std::sort(first, middle, std::move(upward));
@@ -148,19 +148,19 @@ namespace recti {
      * @param[in] first
      * @param[in] last
      */
-    template <typename FwIter> inline void create_test_rpolygon(FwIter&& first, FwIter&& last) {
+    template <typename FwIter> inline void create_test_rpolygon(FwIter &&first, FwIter &&last) {
         assert(first != last);
 
-        auto up = [](const auto& a, const auto& b) {
+        auto up = [](const auto &a, const auto &b) {
             return std::tie(a.y(), a.x()) < std::tie(b.y(), b.x());
         };
-        auto down = [](const auto& a, const auto& b) {
+        auto down = [](const auto &a, const auto &b) {
             return std::tie(a.y(), a.x()) > std::tie(b.y(), b.x());
         };
-        auto left = [](const auto& a, const auto& b) {
+        auto left = [](const auto &a, const auto &b) {
             return std::tie(a.x(), a.y()) < std::tie(b.x(), b.y());
         };
-        auto right = [](const auto& a, const auto& b) {
+        auto right = [](const auto &a, const auto &b) {
             return std::tie(a.x(), a.y()) > std::tie(b.x(), b.y());
         };
 
@@ -168,17 +168,17 @@ namespace recti {
         auto max_pt = *std::max_element(first, last, up);
         auto dx = max_pt.x() - min_pt.x();
         auto dy = max_pt.y() - min_pt.y();
-        auto middle = std::partition(first, last, [&](const auto& a) {
+        auto middle = std::partition(first, last, [&](const auto &a) {
             return dx * (a.y() - min_pt.y()) < (a.x() - min_pt.x()) * dy;
         });
 
         auto max_pt1 = *std::max_element(first, middle, left);
         auto middle2
-            = std::partition(first, middle, [&](const auto& a) { return a.y() < max_pt1.y(); });
+            = std::partition(first, middle, [&](const auto &a) { return a.y() < max_pt1.y(); });
 
         auto min_pt2 = *std::min_element(middle, last, left);
         auto middle3
-            = std::partition(middle, last, [&](const auto& a) { return a.y() > min_pt2.y(); });
+            = std::partition(middle, last, [&](const auto &a) { return a.y() > min_pt2.y(); });
 
         if (dx < 0)  // clockwise
         {
@@ -215,10 +215,10 @@ namespace recti {
      * @return false
      */
     template <typename T>
-    inline auto point_in_rpolygon(gsl::span<const Point<T>> S, const Point<T>& q) -> bool {
+    inline auto point_in_rpolygon(gsl::span<const Point<T>> S, const Point<T> &q) -> bool {
         auto c = false;
         auto p0 = S.back();
-        for (auto&& p1 : S) {
+        for (auto &&p1 : S) {
             if ((p1.y() <= q.y() && q.y() < p0.y()) || (p0.y() <= q.y() && q.y() < p1.y())) {
                 if (p1.x() > q.x()) {
                     c = !c;

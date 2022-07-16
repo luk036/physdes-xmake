@@ -41,7 +41,8 @@ TEST_CASE("Polygon test (y-mono 50)") {
     }
     create_ymono_polygon(S.begin(), S.end());
     // fmt::print(
-    //     "\n<svg viewBox='0 0 2187 2048' xmlns='http://www.w3.org/2000/svg'>\n");
+    //     "\n<svg viewBox='0 0 2187 2048'
+    //     xmlns='http://www.w3.org/2000/svg'>\n");
     // fmt::print("  <polygon points='");
     // for (auto&& p : S)
     // {

@@ -27,4 +27,4 @@ jobs:
           xmake --version
           xmake f -m release -y
           xmake
-          xmake run test
+          xmake run test_recti

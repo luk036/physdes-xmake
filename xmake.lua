@@ -6,10 +6,15 @@ add_requires("conan::ms-gsl/3.1.0", {alias = "ms-gsl"})
 set_languages("c++17")
 
 -- header only package
-
-target("test")
-    set_kind("binary")
+target("Recti")
+    set_kind("static")
     add_includedirs("include", {public = true})
+    add_packages("ms-gsl")
+
+target("test_recti")
+    set_kind("binary")
+    add_deps("Recti")
+    -- add_includedirs("include", {public = true})
     add_files("tests/*.cpp")
     add_packages("fmt", "doctest", "ms-gsl")
 

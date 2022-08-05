@@ -17,7 +17,7 @@ TEST_CASE("Rectilinear Polygon test (y-mono)") {
     auto is_anticlockwise = create_ymono_rpolygon(S.begin(), S.end());
     auto P = RPolygon<int>(S);
     CHECK(is_anticlockwise);
-    CHECK(P.signed_area() == 45);
+    CHECK_EQ(P.signed_area(), 45);
     CHECK(!rpolygon_is_clockwise<int>(S));
     CHECK(!point_in_rpolygon<int>(S, Point{4, 5}));
 }
@@ -28,7 +28,7 @@ TEST_CASE("Rectilinear Polygon test (x-mono)") {
     auto is_anticlockwise = create_xmono_rpolygon(S.begin(), S.end());
     auto P = RPolygon<int>(S);
     CHECK(!is_anticlockwise);
-    CHECK(P.signed_area() == -53);
+    CHECK_EQ(P.signed_area(), -53);
     CHECK(rpolygon_is_clockwise<int>(S));
 }
 
@@ -64,7 +64,7 @@ TEST_CASE("Rectilinear Polygon test (y-mono 50)") {
 
     auto P = RPolygon<int>(S);
     CHECK(!is_anticlockwise);
-    CHECK(P.signed_area() == -2032128);
+    CHECK_EQ(P.signed_area(), -2032128);
     CHECK(rpolygon_is_clockwise<int>(S));
     CHECK(!point_in_rpolygon<int>(S, q));
     // puts("Hello world1\n");

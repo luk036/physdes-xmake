@@ -15,8 +15,8 @@ namespace recti {
      */
     template <typename T> class RPolygon {
       private:
-        Point<T> _origin;
-        std::vector<Vector2<T>> _vecs;  // @todo: add custom allocator support
+        Point<T> _origin{};
+        std::vector<Vector2<T>> _vecs{};  // @todo: add custom allocator support
 
       public:
         /**

@@ -12,17 +12,17 @@ namespace recti {
     /**
      * @brief Forward declaration
      *
-     * @tparam U1
-     * @tparam U2
+     * @tparam T1 int, Interval, or Point
+     * @tparam T2 int or Interval
      */
-    template <typename U1, typename U2> class Point;
+    template <typename T1, typename T2> class Point;
 
 #pragma pack(push, 1)
     /**
-     * @brief 2D Point
+     * @brief Point
      *
-     * @tparam T1
-     * @tparam T2
+     * @tparam T1 int, Interval, or Point
+     * @tparam T2 int or Interval
      */
     template <typename T1, typename T2 = T1> class Point {
         using Self = Point<T1, T2>;
@@ -61,14 +61,14 @@ namespace recti {
          *
          * @return const T1&
          */
-        [[nodiscard]] constexpr auto x() const noexcept -> const T1 & { return this->_x; }
+        [[nodiscard]] constexpr auto x() const -> const T1 & { return this->_x; }
 
         /**
          * @brief
          *
          * @return const T2&
          */
-        [[nodiscard]] constexpr auto y() const noexcept -> const T2 & { return this->_y; }
+        [[nodiscard]] constexpr auto y() const -> const T2 & { return this->_y; }
 
         /**
          * @brief tie
@@ -242,7 +242,7 @@ namespace recti {
          * @param[in] alpha
          * @return Self&
          */
-        constexpr auto operator+=(const T1 &alpha) -> Self & {
+        constexpr auto operator+=(const T2 &alpha) -> Self & {
             this->_x += alpha;
             this->_y += alpha;
             return *this;
@@ -445,7 +445,7 @@ namespace recti {
         using T1 = decltype(std::declval(iterator::value_type).x());
         using T2 = decltype(std::declval(iterator::value_type).y());
 
-        constexpr dual_iterator(iterator &&a) : iterator{std::forward<iterator>(a)} {}
+        constexpr explicit dual_iterator(iterator &&a) : iterator{std::forward<iterator>(a)} {}
 
         constexpr auto operator*() const noexcept -> const dualpoint<T2, T1> & {
             return dualpoint<T2, T1>{};

@@ -15,8 +15,8 @@ namespace recti {
      */
     template <typename T> class Polygon {
       private:
-        Point<T> _origin;
-        std::vector<Vector2<T>> _vecs;
+        Point<T> _origin{};
+        std::vector<Vector2<T>> _vecs{};
 
       public:
         /**

@@ -39,7 +39,7 @@ namespace recti {
          * @tparam U1
          * @tparam U2
          */
-        template <typename U1, typename U2> constexpr Vector2(const Vector2<U1, U2> &other)
+        template <typename U1, typename U2> constexpr explicit Vector2(const Vector2<U1, U2> &other)
             : _x(other.x()), _y(other.y()) {}
 
         /**

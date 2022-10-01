@@ -42,7 +42,7 @@ namespace recti {
          * @param[in] base
          * @param[in] scale
          */
-        constexpr vdcorput(unsigned base = 2, unsigned scale = 10) noexcept
+        constexpr explicit vdcorput(unsigned base = 2, unsigned scale = 10) noexcept
             : _base{base}, _scale{scale} {}
 
         /**

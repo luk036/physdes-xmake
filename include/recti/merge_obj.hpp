@@ -17,7 +17,7 @@ namespace recti {
      *
      * @tparam T
      */
-    template <typename T1, typename T2> class MergeObj : public Point<T1, T2> {
+    template <typename T1, typename T2> class MergeObj : private Point<T1, T2> {
       public:
         /**
          * @brief Construct a new Point object
@@ -26,6 +26,39 @@ namespace recti {
          * @param[in] ycoord
          */
         constexpr MergeObj(T1 &&xcoord, T2 &&ycoord) noexcept : Point<T1, T2>{std::move(xcoord), std::move(ycoord)} {}
+
+        /** @name Comparison operators
+         *  definie ==, !=, <, >, <=, >=.
+         */
+        ///@{
+
+        /**
+         * @brief Equal to
+         *
+         * @tparam U1
+         * @tparam U2
+         * @param[in] rhs
+         * @return true
+         * @return false
+         */
+        template <typename U1, typename U2>
+        constexpr auto operator==(const MergeObj<U1, U2> &rhs) const -> bool {
+            return this->_tie() == rhs._tie();
+        }
+
+        /**
+         * @brief Not equal to
+         *
+         * @tparam U1
+         * @tparam U2
+         * @param[in] rhs
+         * @return true
+         * @return false
+         */
+        template <typename U1, typename U2>
+        constexpr auto operator!=(const MergeObj<U1, U2> &rhs) const -> bool {
+            return this->_tie() != rhs._tie();
+        }
 
         // /**
         //  * @brief Construct a new Point object
@@ -45,7 +78,7 @@ namespace recti {
          */
         template <typename U> constexpr auto operator+=(const Vector2<U> &rhs) -> MergeObj & {
             this->_x += rhs.x() + rhs.y();
-            this->_y += rhs.x() - rhs.y();
+            this->_y += rhs.x() - rhs.y(); // notice here!
             return *this;
         }
 
@@ -58,7 +91,7 @@ namespace recti {
          */
         template <typename U> constexpr auto operator-=(const Vector2<U> &rhs) -> MergeObj & {
             this->_x -= rhs.x() + rhs.y();
-            this->_y -= rhs.x() - rhs.y();
+            this->_y -= rhs.x() - rhs.y(); // notice here!
             return *this;
         }
 
@@ -71,8 +104,8 @@ namespace recti {
          * @return Vector2<T>
          */
         template <typename U>  //
-        friend constexpr auto operator+(MergeObj xcoord, const Vector2<U> &ycoord) -> MergeObj {
-            return xcoord += ycoord;
+        friend constexpr auto operator+(MergeObj lhs, const Vector2<U> &rhs) -> MergeObj {
+            return lhs += rhs;
         }
 
         /**
@@ -84,8 +117,38 @@ namespace recti {
          * @return Vector2<T>
          */
         template <typename U>  //
-        friend constexpr auto operator-(MergeObj xcoord, const Vector2<U> &ycoord) -> MergeObj {
-            return xcoord -= ycoord;
+        friend constexpr auto operator-(MergeObj lhs, const Vector2<U> &rhs) -> MergeObj {
+            return lhs -= rhs;
+        }
+
+        /**
+         * @brief overlap
+         *
+         * @tparam U1
+         * @tparam U2
+         * @param other
+         * @return true
+         * @return false
+         */
+        template <typename U1, typename U2>  //
+        [[nodiscard]] constexpr auto overlaps(const MergeObj<U1, U2> &other) const -> bool {
+            return overlap(this->xcoord(), other.xcoord()) && overlap(this->ycoord(), other.ycoord());
+        }
+
+        /**
+         * @brief intersection
+         *
+         * @tparam U1
+         * @tparam U2
+         * @param other
+         * @return true
+         * @return false
+         */
+        template <typename U1, typename U2>  //
+        [[nodiscard]] constexpr auto intersection_with(const MergeObj<U1, U2> &other) const {
+            auto xcoord = intersection(this->xcoord(), other.xcoord());
+            auto ycoord = intersection(this->ycoord(), other.ycoord());
+            return MergeObj<decltype(xcoord), decltype(ycoord)>{std::move(xcoord), std::move(ycoord)};
         }
 
         /**
@@ -125,6 +188,22 @@ namespace recti {
             auto trr1 = enlarge(*this, half);
             auto trr2 = enlarge(other, alpha - half);
             return intersection(trr1, trr2);
+        }
+
+
+        /**
+         * @brief
+         *
+         * @tparam T1
+         * @tparam T2
+         * @tparam Stream
+         * @param[out] out
+         * @param[in] p
+         * @return Stream&
+         */
+        template <class Stream> friend auto operator<<(Stream &out, const MergeObj &p) -> Stream & {
+            out << "/" << p.xcoord() << ", " << p.ycoord() << "/";
+            return out;
         }
 
         // /**

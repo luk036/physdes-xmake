@@ -1,11 +1,11 @@
 #include <doctest/doctest.h>  // for ResultBuilder, CHECK, Expression_lhs
 
 #include <recti/halton_int.hpp>  // for recti
-#include <recti/recti.hpp>       // for Rect, HSegment, VSegment
+#include <recti/recti.hpp>       // for Rectangle, HSegment, VSegment
 // #include <random>
 #include <ostream>  // for operator<<
 
-#include "recti/interval.hpp"  // for interval, min_dist, overlap
+#include "recti/interval.hpp"  // for Interval, min_dist, overlap
 #include "recti/point.hpp"     // for Point, operator<<, operator+, operat...
 #include "recti/vector2.hpp"   // for operator/, vector2
 
@@ -33,17 +33,18 @@ TEST_CASE("Point test") {
 }
 
 TEST_CASE("Rectangle test") {
-    auto xrng1 = interval{4, 8};
-    auto yrng1 = interval{5, 7};
-    auto r1 = Rect{xrng1, yrng1};
-    auto xrng2 = interval{5, 7};
-    auto yrng2 = interval{6, 6};
-    auto r2 = Rect{xrng2, yrng2};
+    auto xrng1 = Interval{4, 8};
+    auto yrng1 = Interval{5, 7};
+    auto r1 = Rectangle{xrng1, yrng1};
+    auto xrng2 = Interval{5, 7};
+    auto yrng2 = Interval{6, 6};
+    auto r2 = Rectangle{xrng2, yrng2};
     auto p = Point{7, 6};
     auto v = Vector2{5, 6};
+    Rectangle r3 = r1 - v;
 
     CHECK(r1 != r2);
-    CHECK((r1 - v) + v == r1);
+    CHECK(r3 + v == r1);
 
     CHECK(r1 <= p);
     CHECK(r1.contains(p));
@@ -56,8 +57,8 @@ TEST_CASE("Rectangle test") {
 }
 
 TEST_CASE("Segment test") {
-    auto xrng1 = interval{4, 8};
-    auto yrng1 = interval{5, 7};
+    auto xrng1 = Interval{4, 8};
+    auto yrng1 = Interval{5, 7};
     auto s1 = HSegment{xrng1, 6};
     auto s2 = VSegment{5, yrng1};
 

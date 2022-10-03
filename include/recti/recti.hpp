@@ -1,6 +1,6 @@
 #pragma once
 
-#include "interval.hpp"  // for interval
+#include "interval.hpp"  // for Interval
 #include "point.hpp"     // for Point
 
 namespace recti {
@@ -11,30 +11,46 @@ namespace recti {
      *
      * @tparam T
      */
-    template <typename T> struct Rect : Point<interval<T>> {
+    template <typename T> struct Rectangle : Point<Interval<T>> {
         /**
-         * @brief Construct a new Rect object
+         * @brief Construct a new Rectangle object
          *
          * @param[in] x
          * @param[in] y
          */
-        constexpr Rect(interval<T> &&x, interval<T> &&y) noexcept
-            : Point<interval<T>>{std::move(x), std::move(y)} {}
+        constexpr Rectangle(Interval<T> &&x, Interval<T> &&y) noexcept
+            : Point<Interval<T>>{std::move(x), std::move(y)} {}
 
         /**
-         * @brief Construct a new Rect object
+         * @brief Construct a new Rectangle object
          *
          * @param[in] x
          * @param[in] y
          */
-        constexpr Rect(const interval<T> &x, const interval<T> &y) : Point<interval<T>>{x, y} {}
+        constexpr Rectangle(const Interval<T> &x, const Interval<T> &y) : Point<Interval<T>>{x, y} {}
+
+        /**
+         * @brief Construct a new Rectangle object from the base object (implicitly)
+         *
+         * @param[in] p
+         */
+        constexpr Rectangle(Point<Interval<T>> &&p) noexcept
+            : Point<Interval<T>>{std::move(p)} {}
+
+        /**
+         * @brief Construct a new Rectangle object from the base object (implicitly)
+         *
+         * @param[in] p
+         */
+        constexpr Rectangle(const Point<Interval<T>> &p)
+            : Point<Interval<T>>{p} {}
 
         /**
          * @brief
          *
          * @return Point<T>
          */
-        [[nodiscard]] constexpr auto lb() const -> Point<T> {
+        [[nodiscard]] constexpr auto ll() const -> Point<T> {
             return {this->x().lb(), this->y().lb()};
         }
 
@@ -43,7 +59,7 @@ namespace recti {
          *
          * @return Point<T>
          */
-        [[nodiscard]] constexpr auto ub() const -> Point<T> {
+        [[nodiscard]] constexpr auto ur() const -> Point<T> {
             return {this->x().ub(), this->y().ub()};
         }
 
@@ -62,15 +78,15 @@ namespace recti {
      *
      * @tparam T
      */
-    template <typename T> struct HSegment : Point<interval<T>, T> {
+    template <typename T> struct HSegment : Point<Interval<T>, T> {
         /**
          * @brief Construct a new HSegment object
          *
          * @param[in] x
          * @param[in] y
          */
-        constexpr HSegment(interval<T> &&x, T &&y) noexcept
-            : Point<interval<T>, T>{std::move(x), std::move(y)} {}
+        constexpr HSegment(Interval<T> &&x, T &&y) noexcept
+            : Point<Interval<T>, T>{std::move(x), std::move(y)} {}
 
         /**
          * @brief Construct a new HSegment object
@@ -78,7 +94,24 @@ namespace recti {
          * @param[in] x
          * @param[in] y
          */
-        constexpr HSegment(const interval<T> &x, const T &y) : Point<interval<T>, T>{x, y} {}
+        constexpr HSegment(const Interval<T> &x, const T &y) : Point<Interval<T>, T>{x, y} {}
+
+        /**
+         * @brief Construct a new HSegment object from the base object (implicitly)
+         *
+         * @param[in] p
+         */
+        constexpr HSegment(Point<Interval<T>, T> &&p) noexcept
+            : Point<Interval<T>, T>{std::move(p)} {}
+
+        /**
+         * @brief Construct a new HSegment object from the base object (implicitly)
+         *
+         * @param[in] p
+         */
+        constexpr HSegment(const Point<Interval<T>, T> &p)
+            : Point<Interval<T>, T>{p} {}
+
     };
 #pragma pack(pop)
 
@@ -88,15 +121,15 @@ namespace recti {
      *
      * @tparam T
      */
-    template <typename T> struct VSegment : Point<T, interval<T>> {
+    template <typename T> struct VSegment : Point<T, Interval<T>> {
         /**
          * @brief Construct a new VSegment object
          *
          * @param[in] x
          * @param[in] y
          */
-        constexpr VSegment(T &&x, interval<T> &&y) noexcept
-            : Point<T, interval<T>>{std::move(x), std::move(y)} {}
+        constexpr VSegment(T &&x, Interval<T> &&y) noexcept
+            : Point<T, Interval<T>>{std::move(x), std::move(y)} {}
 
         /**
          * @brief Construct a new VSegment object
@@ -104,7 +137,24 @@ namespace recti {
          * @param[in] x
          * @param[in] y
          */
-        constexpr VSegment(const T &x, const interval<T> &y) : Point<T, interval<T>>{x, y} {}
+        constexpr VSegment(const T &x, const Interval<T> &y) : Point<T, Interval<T>>{x, y} {}
+
+        /**
+         * @brief Construct a new VSegment object from the base object (implicitly)
+         *
+         * @param[in] p
+         */
+        constexpr VSegment(Point<T, Interval<T>> &&p) noexcept
+            : Point<T, Interval<T>>{std::move(p)} {}
+
+        /**
+         * @brief Construct a new VSegment object from the base object (implicitly)
+         *
+         * @param[in] p
+         */
+        constexpr VSegment(const Point<T, Interval<T>> &p)
+            : Point<T, Interval<T>>{p} {}
+
     };
 #pragma pack(pop)
 

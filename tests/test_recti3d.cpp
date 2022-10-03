@@ -3,9 +3,9 @@
 #include <ostream>               // for operator<<
 #include <recti/halton_int.hpp>  // for recti
 #include <recti/merge_obj.hpp>   // for merge_obj
-#include <recti/recti.hpp>       // for Rect
+#include <recti/recti.hpp>       // for Rectangle
 
-#include "recti/interval.hpp"  // for min_dist, interval, overlap
+#include "recti/interval.hpp"  // for min_dist, Interval, overlap
 #include "recti/point.hpp"     // for Point, operator<<, operator+, operator-
 #include "recti/vector2.hpp"   // for Vector2, operator/
 
@@ -33,8 +33,8 @@ TEST_CASE("Point 3D test") {
 }
 
 TEST_CASE("Interval test") {
-    auto a = Point{interval{4, 8}, 1};
-    auto b = Point{interval{5, 6}, 1};
+    auto a = Point{Interval{4, 8}, 1};
+    auto b = Point{Interval{5, 6}, 1};
     auto v = Vector2{3, 0};
 
     CHECK(!(a < b));
@@ -61,12 +61,12 @@ TEST_CASE("Interval test") {
 }
 
 TEST_CASE("Rectangle 3D test") {
-    auto xrng1 = interval{40000, 80000};
-    auto yrng1 = interval{50000, 70000};
-    auto r1 = Point{Rect{xrng1, yrng1}, 1000};
-    auto xrng2 = interval{50000, 70000};
-    auto yrng2 = interval{60000, 60000};
-    auto r2 = Point{Rect{xrng2, yrng2}, 1000};
+    auto xrng1 = Interval{40000, 80000};
+    auto yrng1 = Interval{50000, 70000};
+    auto r1 = Point{Rectangle{xrng1, yrng1}, 1000};
+    auto xrng2 = Interval{50000, 70000};
+    auto yrng2 = Interval{60000, 60000};
+    auto r2 = Point{Rectangle{xrng2, yrng2}, 1000};
     auto v = Vector2{Vector2{50000, 60000}, 0};
     auto p1 = Point{Point{70000, 60000}, 1000};
     auto p2 = Point{Point{70000, 60000}, 2000};
@@ -89,8 +89,8 @@ TEST_CASE("Rectangle 3D test") {
 }
 
 // TEST_CASE("Segment test") {
-//     auto xrng1 = interval{4, 8};
-//     auto yrng1 = interval{5, 7};
+//     auto xrng1 = Interval{4, 8};
+//     auto yrng1 = Interval{5, 7};
 //     auto s1 = HSegment{xrng1, 6};
 //     auto s2 = VSegment{5, yrng1};
 
@@ -99,7 +99,7 @@ TEST_CASE("Rectangle 3D test") {
 
 // TEST_CASE("Interval overlapping test") {
 //     constexpr auto N = 20;
-//     auto lst = std::list<interval<unsigned int>>{};
+//     auto lst = std::list<Interval<unsigned int>>{};
 //     auto hgenX = vdcorput(3, 7);
 //     // auto hgenY = vdcorput(2, 11);
 
@@ -107,16 +107,16 @@ TEST_CASE("Rectangle 3D test") {
 //         for (auto j = 0; j != N; ++j) {
 //             auto x = hgenX();
 //             // auto y = hgenY();
-//             auto xrng = interval{x, x + 100};
-//             // auto yrng = interval{y, y + 100};
-//             // auto r = Rect{xrng, yrng};
+//             auto xrng = Interval{x, x + 100};
+//             // auto yrng = Interval{y, y + 100};
+//             // auto r = Rectangle{xrng, yrng};
 //             // lst.push_back(r);
 //             lst.push_back(xrng);
 //         }
 //     }
 
-//     std::set<interval<unsigned int>> S;   // set of maximal non-overlapped
-//     rectangles std::list<interval<unsigned int>> L;  // list of the removed
+//     std::set<Interval<unsigned int>> S;   // set of maximal non-overlapped
+//     rectangles std::list<Interval<unsigned int>> L;  // list of the removed
 //     rectangles
 
 //     for (const auto& intvl : lst) {

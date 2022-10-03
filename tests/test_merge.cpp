@@ -38,5 +38,5 @@ TEST_CASE("merge test") {
     auto m1 = s1.merge_with(s2);
     std::cout << m1 << '\n';
     // CHECK(false);
-    CHECK(m1 == MergeObj(interval{1100, 1100}, interval{-700, -100}));
+    CHECK(m1 == MergeObj(Interval{1100, 1100}, Interval{-700, -100}));
 }

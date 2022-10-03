@@ -29,7 +29,7 @@ namespace recti {
      * @brief van der Corput sequence generator
      *
      */
-    class vdcorput {
+    class Vdcorput {
       private:
         unsigned _count{0};
         unsigned _base;
@@ -37,12 +37,12 @@ namespace recti {
 
       public:
         /**
-         * @brief Construct a new vdcorput object
+         * @brief Construct a new Vdcorput object
          *
          * @param[in] base
          * @param[in] scale
          */
-        constexpr explicit vdcorput(unsigned base = 2, unsigned scale = 10) noexcept
+        constexpr explicit Vdcorput(unsigned base = 2, unsigned scale = 10) noexcept
             : _base{base}, _scale{scale} {}
 
         /**
@@ -69,8 +69,8 @@ namespace recti {
      */
     class halton {
       private:
-        vdcorput _vdc0;
-        vdcorput _vdc1;
+        Vdcorput _vdc0;
+        Vdcorput _vdc1;
 
       public:
         /**

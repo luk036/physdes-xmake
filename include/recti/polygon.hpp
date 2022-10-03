@@ -134,7 +134,7 @@ namespace recti {
      */
     template <typename FwIter> inline void create_ymono_polygon(FwIter &&first, FwIter &&last) {
         return create_mono_polygon(first, last, [](const auto &a, const auto &b) {
-            return std::tie(a.y(), a.x()) < std::tie(b.y(), b.x());
+            return std::tie(a.ycoord(), a.xcoord()) < std::tie(b.ycoord(), b.xcoord());
         });
     }
 
@@ -162,13 +162,13 @@ namespace recti {
         auto c = false;
         auto p0 = S.back();
         for (auto &&p1 : S) {
-            if ((p1.y() <= q.y() && q.y() < p0.y()) || (p0.y() <= q.y() && q.y() < p1.y())) {
+            if ((p1.ycoord() <= q.ycoord() && q.ycoord() < p0.ycoord()) || (p0.ycoord() <= q.ycoord() && q.ycoord() < p1.ycoord())) {
                 auto d = (q - p0).cross(p1 - p0);
-                if (p1.y() > p0.y()) {
+                if (p1.ycoord() > p0.ycoord()) {
                     if (d < 0) {
                         c = !c;
                     }
-                } else {  // v1.y() < v0.y()
+                } else {  // v1.ycoord() < v0.ycoord()
                     if (d > 0) {
                         c = !c;
                     }

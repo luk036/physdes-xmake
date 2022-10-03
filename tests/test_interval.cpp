@@ -2,7 +2,7 @@
 
 #include <list>                  // for list, __list_iterator, operator!=
 #include <ostream>               // for operator<<
-#include <recti/halton_int.hpp>  // for vdcorput, recti
+#include <recti/halton_int.hpp>  // for Vdcorput, recti
 #include <recti/interval.hpp>    // for Interval, operator<<, operator+, ope...
 #include <set>                   // for set, set<>::iterator
 
@@ -78,8 +78,8 @@ TEST_CASE("Interval of Interval test") {
 TEST_CASE("Interval overlapping test") {
     constexpr auto N = 20;
     auto lst = std::list<Interval<unsigned int>>{};
-    auto hgenX = vdcorput(3, 7);
-    // auto hgenY = vdcorput(2, 11);
+    auto hgenX = Vdcorput(3, 7);
+    // auto hgenY = Vdcorput(2, 11);
 
     for (auto i = 0; i != N; ++i) {
         for (auto j = 0; j != N; ++j) {

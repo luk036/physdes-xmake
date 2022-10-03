@@ -15,19 +15,19 @@ namespace recti {
         /**
          * @brief Construct a new Rectangle object
          *
-         * @param[in] x
-         * @param[in] y
+         * @param[in] xcoord
+         * @param[in] ycoord
          */
-        constexpr Rectangle(Interval<T> &&x, Interval<T> &&y) noexcept
-            : Point<Interval<T>>{std::move(x), std::move(y)} {}
+        constexpr Rectangle(Interval<T> &&xcoord, Interval<T> &&ycoord) noexcept
+            : Point<Interval<T>>{std::move(xcoord), std::move(ycoord)} {}
 
         /**
          * @brief Construct a new Rectangle object
          *
-         * @param[in] x
-         * @param[in] y
+         * @param[in] xcoord
+         * @param[in] ycoord
          */
-        constexpr Rectangle(const Interval<T> &x, const Interval<T> &y) : Point<Interval<T>>{x, y} {}
+        constexpr Rectangle(const Interval<T> &xcoord, const Interval<T> &ycoord) : Point<Interval<T>>{xcoord, ycoord} {}
 
         /**
          * @brief Construct a new Rectangle object from the base object (implicitly)
@@ -51,7 +51,7 @@ namespace recti {
          * @return Point<T>
          */
         [[nodiscard]] constexpr auto ll() const -> Point<T> {
-            return {this->x().lb(), this->y().lb()};
+            return {this->xcoord().lb(), this->ycoord().lb()};
         }
 
         /**
@@ -60,7 +60,7 @@ namespace recti {
          * @return Point<T>
          */
         [[nodiscard]] constexpr auto ur() const -> Point<T> {
-            return {this->x().ub(), this->y().ub()};
+            return {this->xcoord().ub(), this->ycoord().ub()};
         }
 
         /**
@@ -68,7 +68,7 @@ namespace recti {
          *
          * @return constexpr T
          */
-        [[nodiscard]] constexpr auto area() const -> T { return this->x().len() * this->y().len(); }
+        [[nodiscard]] constexpr auto area() const -> T { return this->xcoord().len() * this->ycoord().len(); }
     };
 #pragma pack(pop)
 
@@ -82,19 +82,19 @@ namespace recti {
         /**
          * @brief Construct a new HSegment object
          *
-         * @param[in] x
-         * @param[in] y
+         * @param[in] xcoord
+         * @param[in] ycoord
          */
-        constexpr HSegment(Interval<T> &&x, T &&y) noexcept
-            : Point<Interval<T>, T>{std::move(x), std::move(y)} {}
+        constexpr HSegment(Interval<T> &&xcoord, T &&ycoord) noexcept
+            : Point<Interval<T>, T>{std::move(xcoord), std::move(ycoord)} {}
 
         /**
          * @brief Construct a new HSegment object
          *
-         * @param[in] x
-         * @param[in] y
+         * @param[in] xcoord
+         * @param[in] ycoord
          */
-        constexpr HSegment(const Interval<T> &x, const T &y) : Point<Interval<T>, T>{x, y} {}
+        constexpr HSegment(const Interval<T> &xcoord, const T &ycoord) : Point<Interval<T>, T>{xcoord, ycoord} {}
 
         /**
          * @brief Construct a new HSegment object from the base object (implicitly)
@@ -125,19 +125,19 @@ namespace recti {
         /**
          * @brief Construct a new VSegment object
          *
-         * @param[in] x
-         * @param[in] y
+         * @param[in] xcoord
+         * @param[in] ycoord
          */
-        constexpr VSegment(T &&x, Interval<T> &&y) noexcept
-            : Point<T, Interval<T>>{std::move(x), std::move(y)} {}
+        constexpr VSegment(T &&xcoord, Interval<T> &&ycoord) noexcept
+            : Point<T, Interval<T>>{std::move(xcoord), std::move(ycoord)} {}
 
         /**
          * @brief Construct a new VSegment object
          *
-         * @param[in] x
-         * @param[in] y
+         * @param[in] xcoord
+         * @param[in] ycoord
          */
-        constexpr VSegment(const T &x, const Interval<T> &y) : Point<T, Interval<T>>{x, y} {}
+        constexpr VSegment(const T &xcoord, const Interval<T> &ycoord) : Point<T, Interval<T>>{xcoord, ycoord} {}
 
         /**
          * @brief Construct a new VSegment object from the base object (implicitly)

@@ -100,15 +100,15 @@ TEST_CASE("Rectangle 3D test") {
 // TEST_CASE("Interval overlapping test") {
 //     constexpr auto N = 20;
 //     auto lst = std::list<Interval<unsigned int>>{};
-//     auto hgenX = vdcorput(3, 7);
-//     // auto hgenY = vdcorput(2, 11);
+//     auto hgenX = Vdcorput(3, 7);
+//     // auto hgenY = Vdcorput(2, 11);
 
 //     for (auto i = 0; i != N; ++i) {
 //         for (auto j = 0; j != N; ++j) {
-//             auto x = hgenX();
-//             // auto y = hgenY();
-//             auto xrng = Interval{x, x + 100};
-//             // auto yrng = Interval{y, y + 100};
+//             auto xcoord = hgenX();
+//             // auto ycoord = hgenY();
+//             auto xrng = Interval{xcoord, xcoord + 100};
+//             // auto yrng = Interval{ycoord, ycoord + 100};
 //             // auto r = Rectangle{xrng, yrng};
 //             // lst.push_back(r);
 //             lst.push_back(xrng);

@@ -99,9 +99,9 @@ namespace recti {
 
         const auto leftmost = *std::min_element(first, last);
         const auto rightmost = *std::max_element(first, last);
-        const auto is_anticlockwise = rightmost.y() <= leftmost.y();
-        auto r2l = [&](const auto &a) { return a.y() <= leftmost.y(); };
-        auto l2r = [&](const auto &a) { return a.y() >= leftmost.y(); };
+        const auto is_anticlockwise = rightmost.ycoord() <= leftmost.ycoord();
+        auto r2l = [&](const auto &a) { return a.ycoord() <= leftmost.ycoord(); };
+        auto l2r = [&](const auto &a) { return a.ycoord() >= leftmost.ycoord(); };
         const auto middle = is_anticlockwise ? std::partition(first, last, std::move(r2l))
                                              : std::partition(first, last, std::move(l2r));
         std::sort(first, middle);
@@ -123,16 +123,16 @@ namespace recti {
         assert(first != last);
 
         auto upward = [](const auto &a, const auto &b) {
-            return std::tie(a.y(), a.x()) < std::tie(b.y(), b.x());
+            return std::tie(a.ycoord(), a.xcoord()) < std::tie(b.ycoord(), b.xcoord());
         };
         auto downward = [](const auto &a, const auto &b) {
-            return std::tie(a.y(), a.x()) > std::tie(b.y(), b.x());
+            return std::tie(a.ycoord(), a.xcoord()) > std::tie(b.ycoord(), b.xcoord());
         };
         const auto botmost = *std::min_element(first, last, upward);
         const auto topmost = *std::max_element(first, last, upward);
-        const auto is_anticlockwise = topmost.x() >= botmost.x();
-        auto r2l = [&](const auto &a) { return a.x() >= botmost.x(); };
-        auto l2r = [&](const auto &a) { return a.x() <= botmost.x(); };
+        const auto is_anticlockwise = topmost.xcoord() >= botmost.xcoord();
+        auto r2l = [&](const auto &a) { return a.xcoord() >= botmost.xcoord(); };
+        auto l2r = [&](const auto &a) { return a.xcoord() <= botmost.xcoord(); };
         const auto middle = is_anticlockwise ? std::partition(first, last, std::move(r2l))
                                              : std::partition(first, last, std::move(l2r));
         std::sort(first, middle, std::move(upward));
@@ -152,33 +152,33 @@ namespace recti {
         assert(first != last);
 
         auto up = [](const auto &a, const auto &b) {
-            return std::tie(a.y(), a.x()) < std::tie(b.y(), b.x());
+            return std::tie(a.ycoord(), a.xcoord()) < std::tie(b.ycoord(), b.xcoord());
         };
         auto down = [](const auto &a, const auto &b) {
-            return std::tie(a.y(), a.x()) > std::tie(b.y(), b.x());
+            return std::tie(a.ycoord(), a.xcoord()) > std::tie(b.ycoord(), b.xcoord());
         };
         auto left = [](const auto &a, const auto &b) {
-            return std::tie(a.x(), a.y()) < std::tie(b.x(), b.y());
+            return std::tie(a.xcoord(), a.ycoord()) < std::tie(b.xcoord(), b.ycoord());
         };
         auto right = [](const auto &a, const auto &b) {
-            return std::tie(a.x(), a.y()) > std::tie(b.x(), b.y());
+            return std::tie(a.xcoord(), a.ycoord()) > std::tie(b.xcoord(), b.ycoord());
         };
 
         auto min_pt = *std::min_element(first, last, up);
         auto max_pt = *std::max_element(first, last, up);
-        auto dx = max_pt.x() - min_pt.x();
-        auto dy = max_pt.y() - min_pt.y();
+        auto dx = max_pt.xcoord() - min_pt.xcoord();
+        auto dy = max_pt.ycoord() - min_pt.ycoord();
         auto middle = std::partition(first, last, [&](const auto &a) {
-            return dx * (a.y() - min_pt.y()) < (a.x() - min_pt.x()) * dy;
+            return dx * (a.ycoord() - min_pt.ycoord()) < (a.xcoord() - min_pt.xcoord()) * dy;
         });
 
         auto max_pt1 = *std::max_element(first, middle, left);
         auto middle2
-            = std::partition(first, middle, [&](const auto &a) { return a.y() < max_pt1.y(); });
+            = std::partition(first, middle, [&](const auto &a) { return a.ycoord() < max_pt1.ycoord(); });
 
         auto min_pt2 = *std::min_element(middle, last, left);
         auto middle3
-            = std::partition(middle, last, [&](const auto &a) { return a.y() > min_pt2.y(); });
+            = std::partition(middle, last, [&](const auto &a) { return a.ycoord() > min_pt2.ycoord(); });
 
         if (dx < 0)  // clockwise
         {
@@ -219,8 +219,8 @@ namespace recti {
         auto c = false;
         auto p0 = S.back();
         for (auto &&p1 : S) {
-            if ((p1.y() <= q.y() && q.y() < p0.y()) || (p0.y() <= q.y() && q.y() < p1.y())) {
-                if (p1.x() > q.x()) {
+            if ((p1.ycoord() <= q.ycoord() && q.ycoord() < p0.ycoord()) || (p0.ycoord() <= q.ycoord() && q.ycoord() < p1.ycoord())) {
+                if (p1.xcoord() > q.xcoord()) {
                     c = !c;
                 }
             }
@@ -240,11 +240,11 @@ namespace recti {
     template <typename T> inline auto rpolygon_is_clockwise(gsl::span<const Point<T>> S) -> bool {
         auto it1 = std::min_element(S.begin(), S.end());
         auto it0 = it1 != S.begin() ? std::prev(it1) : S.end() - 1;
-        if (it1->y() < it0->y()) return false;
-        if (it1->y() > it0->y()) return true;
-        // it1->y() == it0->y()
+        if (it1->ycoord() < it0->ycoord()) return false;
+        if (it1->ycoord() > it0->ycoord()) return true;
+        // it1->ycoord() == it0->ycoord()
         auto it2 = std::next(it1) != S.end() ? std::next(it1) : S.begin();
-        return it2->y() > it1->y();
+        return it2->ycoord() > it1->ycoord();
     }
 
 }  // namespace recti

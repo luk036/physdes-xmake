@@ -25,11 +25,11 @@ TEST_CASE("MergeObj test") {
 }
 
 /*
-x [ - a ,  + a ]
-y [ - a ,  + a ]
+xcoord [ - a ,  + a ]
+ycoord [ - a ,  + a ]
 
-x [ + a ,  - a ]
-y [ + a ,  - a ]
+xcoord [ + a ,  - a ]
+ycoord [ + a ,  - a ]
 
 */
 TEST_CASE("merge test") {

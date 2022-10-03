@@ -2,7 +2,7 @@
 #include <fmt/core.h>
 
 #include <gsl/span>              // for span
-#include <recti/halton_int.hpp>  // for vdcorput, recti
+#include <recti/halton_int.hpp>  // for Vdcorput, recti
 #include <recti/rpolygon.hpp>    // for RPolygon, RPolygon_is_clockwise, cre...
 #include <vector>                // for vector
 
@@ -11,7 +11,7 @@
 // using std::randint;
 using namespace recti;
 
-TEST_CASE("Rectilinear Polygon test (y-mono)") {
+TEST_CASE("Rectilinear Polygon test (ycoord-mono)") {
     auto S = std::vector<Point<int>>{{-2, 2},  {0, -1}, {-5, 1}, {-2, 4}, {0, -4},  {-4, 3},
                                      {-6, -2}, {5, 1},  {2, 2},  {3, -3}, {-3, -4}, {1, 4}};
     auto is_anticlockwise = create_ymono_rpolygon(S.begin(), S.end());
@@ -22,7 +22,7 @@ TEST_CASE("Rectilinear Polygon test (y-mono)") {
     CHECK(!point_in_rpolygon<int>(S, Point{4, 5}));
 }
 
-TEST_CASE("Rectilinear Polygon test (x-mono)") {
+TEST_CASE("Rectilinear Polygon test (xcoord-mono)") {
     auto S = std::vector<Point<int>>{{-2, 2},  {0, -1}, {-5, 1}, {-2, 4}, {0, -4},  {-4, 3},
                                      {-6, -2}, {5, 1},  {2, 2},  {3, -3}, {-3, -4}, {1, 4}};
     auto is_anticlockwise = create_xmono_rpolygon(S.begin(), S.end());
@@ -32,9 +32,9 @@ TEST_CASE("Rectilinear Polygon test (x-mono)") {
     CHECK(rpolygon_is_clockwise<int>(S));
 }
 
-TEST_CASE("Rectilinear Polygon test (y-mono 50)") {
-    auto hgenX = vdcorput(3, 7);
-    auto hgenY = vdcorput(2, 11);
+TEST_CASE("Rectilinear Polygon test (ycoord-mono 50)") {
+    auto hgenX = Vdcorput(3, 7);
+    auto hgenY = Vdcorput(2, 11);
     auto S = std::vector<Point<int>>{};
     for (auto i = 0; i != 50; ++i) {
         S.emplace_back(Point<int>(int(hgenX()), int(hgenY())));
@@ -47,19 +47,19 @@ TEST_CASE("Rectilinear Polygon test (y-mono 50)") {
     // auto p0 = S.back();
     // for (auto&& p1 : S)
     // {
-    //     fmt::print("{},{} {},{} ", p0.x(), p0.y(), p1.x(), p0.y());
+    //     fmt::print("{},{} {},{} ", p0.xcoord(), p0.ycoord(), p1.xcoord(), p0.ycoord());
     //     p0 = p1;
     // }
     // fmt::print("'\n");
     // fmt::print("  fill='#88C0D0' stroke='black' />\n");
     // for (auto&& p : S)
     // {
-    //     fmt::print("  <circle cx='{}' cy='{}' r='10' />\n", p.x(), p.y());
+    //     fmt::print("  <circle cx='{}' cy='{}' r='10' />\n", p.xcoord(), p.ycoord());
     // }
 
     auto q = Point<int>(int(hgenX()), int(hgenY()));
     // fmt::print(
-    //     "  <circle cx='{}' cy='{}' r='10' fill='#BF616A' />\n", q.x(), q.y());
+    //     "  <circle cx='{}' cy='{}' r='10' fill='#BF616A' />\n", q.xcoord(), q.ycoord());
     fmt::print("</svg>\n");
 
     auto P = RPolygon<int>(S);

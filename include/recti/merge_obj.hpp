@@ -22,18 +22,18 @@ namespace recti {
         /**
          * @brief Construct a new Point object
          *
-         * @param[in] x
-         * @param[in] y
+         * @param[in] xcoord
+         * @param[in] ycoord
          */
-        constexpr MergeObj(T1 &&x, T2 &&y) noexcept : Point<T1, T2>{std::move(x), std::move(y)} {}
+        constexpr MergeObj(T1 &&xcoord, T2 &&ycoord) noexcept : Point<T1, T2>{std::move(xcoord), std::move(ycoord)} {}
 
         // /**
         //  * @brief Construct a new Point object
         //  *
-        //  * @param[in] x
-        //  * @param[in] y
+        //  * @param[in] xcoord
+        //  * @param[in] ycoord
         //  */
-        // constexpr MergeObj(const T1& x, const T2& y) : Point<T1, T2>{x + y, x - y}
+        // constexpr MergeObj(const T1& xcoord, const T2& ycoord) : Point<T1, T2>{xcoord + ycoord, xcoord - ycoord}
         // {}
 
         /**
@@ -66,26 +66,26 @@ namespace recti {
          * @brief Add
          *
          * @tparam U
-         * @param[in] x
-         * @param[in] y
+         * @param[in] xcoord
+         * @param[in] ycoord
          * @return Vector2<T>
          */
         template <typename U>  //
-        friend constexpr auto operator+(MergeObj x, const Vector2<U> &y) -> MergeObj {
-            return x += y;
+        friend constexpr auto operator+(MergeObj xcoord, const Vector2<U> &ycoord) -> MergeObj {
+            return xcoord += ycoord;
         }
 
         /**
          * @brief Substract
          *
          * @tparam U
-         * @param[in] x
-         * @param[in] y
+         * @param[in] xcoord
+         * @param[in] ycoord
          * @return Vector2<T>
          */
         template <typename U>  //
-        friend constexpr auto operator-(MergeObj x, const Vector2<U> &y) -> MergeObj {
-            return x -= y;
+        friend constexpr auto operator-(MergeObj xcoord, const Vector2<U> &ycoord) -> MergeObj {
+            return xcoord -= ycoord;
         }
 
         /**
@@ -104,9 +104,9 @@ namespace recti {
 
         template <typename R>  //
         friend constexpr auto enlarge(const MergeObj &lhs, const R &alpha) {
-            auto x = enlarge(lhs.x(), alpha);
-            auto y = enlarge(lhs.y(), alpha);
-            return MergeObj<decltype(x), decltype(y)>{std::move(x), std::move(y)};
+            auto xcoord = enlarge(lhs.xcoord(), alpha);
+            auto ycoord = enlarge(lhs.ycoord(), alpha);
+            return MergeObj<decltype(xcoord), decltype(ycoord)>{std::move(xcoord), std::move(ycoord)};
         }
 
         /**

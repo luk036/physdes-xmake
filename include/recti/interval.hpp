@@ -370,24 +370,24 @@ namespace recti {
         /**
          * @brief Add by a scalar
          *
-         * @param[in] x
+         * @param[in] rhs
          * @param[in] alpha
          * @return interval
          */
-        template <typename U> friend constexpr auto operator+(Interval x, const U &alpha)
+        template <typename U> friend constexpr auto operator+(Interval rhs, const U &alpha)
             -> Interval {
-            return x += alpha;
+            return rhs += alpha;
         }
 
         /**
          * @brief Add (by a scalar)
          *
          * @param[in] alpha
-         * @param[in] x
+         * @param[in] rhs
          * @return interval
          */
-        friend constexpr auto operator+(const T &alpha, Interval x) -> Interval {
-            return x += alpha;
+        friend constexpr auto operator+(const T &alpha, Interval rhs) -> Interval {
+            return rhs += alpha;
         }
 
         /**
@@ -405,14 +405,14 @@ namespace recti {
         /**
          * @brief Subtract by a scalar
          *
-         * @param[in] x
+         * @param[in] rhs
          * @param[in] alpha
          * @return interval
          */
-        template <typename U> friend constexpr auto operator-(Interval x, const U &alpha)
+        template <typename U> friend constexpr auto operator-(const Interval& rhs, const U &alpha)
             -> Interval {
-            auto lower = x.lb() - alpha;
-            auto upper = x.ub() - alpha;
+            auto lower = rhs.lb() - alpha;
+            auto upper = rhs.ub() - alpha;
             return Interval<decltype(lower)>{std::move(lower), std::move(upper)};
         }
 

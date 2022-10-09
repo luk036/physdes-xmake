@@ -35,7 +35,6 @@ namespace recti {
          */
         template <typename U1, typename U2> friend class Point;
 
-      protected:
         T1 _x;  //!< xcoord coordinate
         T2 _y;  //!< ycoord coordinate
 
@@ -401,6 +400,22 @@ namespace recti {
             out << "(" << p.xcoord() << ", " << p.ycoord() << ")";
             return out;
         }
+
+    protected:
+        /**
+         * @brief
+         *
+         * @return const T1&
+         */
+        [[nodiscard]] constexpr auto get_xcoord() -> T1 & { return this->_x; }
+
+        /**
+         * @brief
+         *
+         * @return const T2&
+         */
+        [[nodiscard]] constexpr auto get_ycoord() -> T2 & { return this->_y; }
+
     };
 #pragma pack(pop)
 

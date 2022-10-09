@@ -25,9 +25,9 @@ namespace recti {
          * @param[in] pointset
          */
         explicit constexpr Polygon(gsl::span<const Point<T>> pointset) : _origin{pointset.front()} {
-            auto it = pointset.begin();
-            for (++it; it != pointset.end(); ++it) {
-                this->_vecs.push_back(*it - this->_origin);
+            auto itr = pointset.begin();
+            for (++itr; itr != pointset.end(); ++itr) {
+                this->_vecs.push_back(*itr - this->_origin);
             }
         }
 
@@ -48,13 +48,13 @@ namespace recti {
          * @return T
          */
         [[nodiscard]] constexpr auto signed_area_x2() const -> T {
-            auto &&vs = this->_vecs;
-            auto n = vs.size();
-            assert(n >= 2);
-            auto res = vs[0].x() * vs[1].y() - vs[n - 1].x() * vs[n - 2].y();
-            auto it = vs.begin();
-            for (++it; it != std::prev(vs.end()); ++it) {
-                res += it->x() * (std::next(it)->y() - std::prev(it)->y());
+            auto first = this->_vecs.begin();
+            auto second = std::next(first);
+            auto end = this->_vecs.end();
+            auto last = std::prev(end);
+            auto res = first->x() * second->y() - last->x() * std::prev(last)->y();
+            for (auto itr = second; itr != last; ++itr) {
+                res += itr->x() * (std::next(itr)->y() - std::prev(itr)->y());
             }
             return res;
         }
@@ -83,10 +83,10 @@ namespace recti {
      * @param[in] r
      * @return Stream&
      */
-    template <class Stream, typename T> auto operator<<(Stream &out, const Polygon<T> &r)
+    template <class Stream, typename T> auto operator<<(Stream &out, const Polygon<T> &poly)
         -> Stream & {
-        for (auto &&p : r) {
-            out << "  \\draw " << p << ";\n";
+        for (auto &&vtx : poly) {
+            out << "  \\draw " << vtx << ";\n";
         }
         return out;
     }

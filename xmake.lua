@@ -10,6 +10,7 @@ target("Recti")
     set_kind("static")
     add_includedirs("include", {public = true})
     add_packages("ms-gsl")
+    set_warnings("all", "error")
 
 target("test_recti")
     set_kind("binary")
@@ -17,6 +18,7 @@ target("test_recti")
     -- add_includedirs("include", {public = true})
     add_files("tests/*.cpp")
     add_packages("fmt", "doctest", "ms-gsl")
+    set_warnings("all", "error")
 
 --
 -- If you want to known more usage about xmake, please see https://xmake.io

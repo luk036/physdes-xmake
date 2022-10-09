@@ -77,8 +77,8 @@ namespace recti {
          * @return MergeObj&
          */
         template <typename U> constexpr auto operator+=(const Vector2<U> &rhs) -> MergeObj & {
-            this->_x += rhs.x() + rhs.y();
-            this->_y += rhs.x() - rhs.y(); // notice here!
+            this->get_xcoord() += rhs.x() + rhs.y();
+            this->get_ycoord() += rhs.x() - rhs.y(); // notice here!
             return *this;
         }
 
@@ -90,8 +90,8 @@ namespace recti {
          * @return MergeObj&
          */
         template <typename U> constexpr auto operator-=(const Vector2<U> &rhs) -> MergeObj & {
-            this->_x -= rhs.x() + rhs.y();
-            this->_y -= rhs.x() - rhs.y(); // notice here!
+            this->get_xcoord() -= rhs.x() + rhs.y();
+            this->get_ycoord() -= rhs.x() - rhs.y(); // notice here!
             return *this;
         }
 
@@ -162,7 +162,7 @@ namespace recti {
          */
         template <typename U1, typename U2>  //
         [[nodiscard]] constexpr auto min_dist_with(const MergeObj<U1, U2> &other) const {
-            return std::max(min_dist(this->_x, other._x), min_dist(this->_y, other._y));
+            return std::max(min_dist(this->xcoord(), other.xcoord()), min_dist(this->ycoord(), other.ycoord()));
         }
 
         template <typename R>  //
@@ -201,8 +201,8 @@ namespace recti {
          * @param[in] p
          * @return Stream&
          */
-        template <class Stream> friend auto operator<<(Stream &out, const MergeObj &p) -> Stream & {
-            out << "/" << p.xcoord() << ", " << p.ycoord() << "/";
+        template <class Stream> friend auto operator<<(Stream &out, const MergeObj &merge_obj) -> Stream & {
+            out << "/" << merge_obj.xcoord() << ", " << merge_obj.ycoord() << "/";
             return out;
         }
 
@@ -225,8 +225,8 @@ namespace recti {
 
     // template <typename U1, typename U2>  //
     // inline constexpr auto min_dist_change_merge(U1& lhs, U2& rhs) {
-    //     if constexpr (std::is_scalar_v<U1>) {
-    //         if constexpr (std::is_scalar_v<U2>) {
+    //     if constexpr (std::is_scalar<U1>::value) {
+    //         if constexpr (std::is_scalar<U2>::value) {
     //             return std::abs(lhs - rhs);
     //         } else {
     //             return rhs.min_dist_change_with(lhs);

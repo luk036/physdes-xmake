@@ -27,7 +27,7 @@ TEST_CASE("Vector2") {
     CHECK_EQ(p + q, q + p);
     CHECK_EQ(p - q, -(q - p));
     CHECK_EQ(p * 3, 3 * p);
-    CHECK_EQ(p + (q - p) / 2, (p + q) / 2);  // TODO
+    CHECK_EQ(p + (q - p) / 2, (p + q) / 2);
 
     const auto r = Vector2{-b, c};
     CHECK_EQ((p + q) + r, p + (q + r));

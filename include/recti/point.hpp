@@ -215,9 +215,9 @@ namespace recti {
          * @return Vector2<T>
          */
         template <typename U1, typename U2>  //
-        friend constexpr auto operator+(Point p, const Vector2<U1, U2> &v) {
-            auto xcoord = p.xcoord() + v.x();
-            auto ycoord = p.ycoord() + v.y();
+        friend constexpr auto operator+(Point lhs, const Vector2<U1, U2> &vec2) {
+            auto xcoord = lhs.xcoord() + vec2.x();
+            auto ycoord = lhs.ycoord() + vec2.y();
             return Point<decltype(xcoord), decltype(ycoord)>{std::move(xcoord), std::move(ycoord)};
         }
 
@@ -231,8 +231,8 @@ namespace recti {
          * @return Vector2<T>
          */
         template <typename U1, typename U2>  //
-        friend constexpr auto operator-(Point xcoord, const Vector2<U1, U2> &ycoord) -> Point {
-            return xcoord -= ycoord;
+        friend constexpr auto operator-(Point lhs, const Vector2<U1, U2> &vec2) -> Point {
+            return lhs -= vec2;
         }
 
         /**
@@ -266,7 +266,7 @@ namespace recti {
          * @param[in] alpha
          * @return Point
          */
-        friend constexpr auto operator+(Point xcoord, const T1 &alpha) -> Point { return xcoord += alpha; }
+        friend constexpr auto operator+(Point lhs, const T1 &alpha) -> Point { return lhs += alpha; }
 
         /**
          * @brief Substract
@@ -275,7 +275,7 @@ namespace recti {
          * @param[in] alpha
          * @return Point
          */
-        friend constexpr auto operator-(Point xcoord, const T1 &alpha) -> Point { return xcoord -= alpha; }
+        friend constexpr auto operator-(Point lhs, const T1 &alpha) -> Point { return lhs -= alpha; }
 
         /**
          * @brief Different
@@ -283,9 +283,9 @@ namespace recti {
          * @param[in] rhs
          * @return constexpr auto
          */
-        constexpr auto operator-(const Self &rhs) const {
-            auto xcoord = this->xcoord() - rhs.xcoord();
-            auto ycoord = this->ycoord() - rhs.ycoord();
+        constexpr auto operator-(const Self &other) const {
+            auto xcoord = this->xcoord() - other.xcoord();
+            auto ycoord = this->ycoord() - other.ycoord();
             return Vector2<decltype(xcoord), decltype(ycoord)>{std::move(xcoord), std::move(ycoord)};
         }
 
@@ -396,8 +396,8 @@ namespace recti {
          * @param[in] p
          * @return Stream&
          */
-        template <class Stream> friend auto operator<<(Stream &out, const Point &p) -> Stream & {
-            out << "(" << p.xcoord() << ", " << p.ycoord() << ")";
+        template <class Stream> friend auto operator<<(Stream &out, const Point &obj) -> Stream & {
+            out << "(" << obj.xcoord() << ", " << obj.ycoord() << ")";
             return out;
         }
 
@@ -451,7 +451,7 @@ namespace recti {
 #pragma pack(pop)
 
     /**
-     * @brief adapter for containers of Point
+     * @brief adapter for containers of Point (deprecated)
      *
      * @tparam iter
      */
@@ -460,7 +460,7 @@ namespace recti {
         using T1 = decltype(std::declval(iterator::value_type).xcoord());
         using T2 = decltype(std::declval(iterator::value_type).ycoord());
 
-        constexpr explicit dual_iterator(iterator &&a) : iterator{std::forward<iterator>(a)} {}
+        constexpr explicit dual_iterator(iterator &&itr) : iterator{std::forward<iterator>(itr)} {}
 
         constexpr auto operator*() const noexcept -> const dualpoint<T2, T1> & {
             return dualpoint<T2, T1>{};

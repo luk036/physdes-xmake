@@ -32,18 +32,20 @@ namespace recti {
         /**
          * @brief Construct a new Rectangle object from the base object (implicitly)
          *
+         * Note: intentionally allow implicit conversion
+         *
          * @param[in] p
          */
-        constexpr Rectangle(Point<Interval<T>> &&p) noexcept
-            : Point<Interval<T>>{std::move(p)} {}
+        constexpr Rectangle(Point<Interval<T>> &&base) noexcept  // Note: intentionally allow implicit conversion
+            : Point<Interval<T>>{std::move(base)} {}
 
         /**
          * @brief Construct a new Rectangle object from the base object (implicitly)
          *
          * @param[in] p
          */
-        constexpr Rectangle(const Point<Interval<T>> &p)
-            : Point<Interval<T>>{p} {}
+        constexpr explicit Rectangle(const Point<Interval<T>> &base)
+            : Point<Interval<T>>{base} {}
 
         /**
          * @brief
@@ -101,16 +103,16 @@ namespace recti {
          *
          * @param[in] p
          */
-        constexpr HSegment(Point<Interval<T>, T> &&p) noexcept
-            : Point<Interval<T>, T>{std::move(p)} {}
+        constexpr HSegment(Point<Interval<T>, T> &&base) noexcept  // Note: intentionally allow implicit conversion
+            : Point<Interval<T>, T>{std::move(base)} {}
 
         /**
          * @brief Construct a new HSegment object from the base object (implicitly)
          *
          * @param[in] p
          */
-        constexpr HSegment(const Point<Interval<T>, T> &p)
-            : Point<Interval<T>, T>{p} {}
+        constexpr explicit HSegment(const Point<Interval<T>, T> &base)
+            : Point<Interval<T>, T>{base} {}
 
     };
 #pragma pack(pop)
@@ -144,16 +146,16 @@ namespace recti {
          *
          * @param[in] p
          */
-        constexpr VSegment(Point<T, Interval<T>> &&p) noexcept
-            : Point<T, Interval<T>>{std::move(p)} {}
+        constexpr VSegment(Point<T, Interval<T>> &&base) noexcept  // Note: intentionally allow implicit conversion
+            : Point<T, Interval<T>>{std::move(base)} {}
 
         /**
          * @brief Construct a new VSegment object from the base object (implicitly)
          *
          * @param[in] p
          */
-        constexpr VSegment(const Point<T, Interval<T>> &p)
-            : Point<T, Interval<T>>{p} {}
+        constexpr explicit VSegment(const Point<T, Interval<T>> &base)
+            : Point<T, Interval<T>>{base} {}
 
     };
 #pragma pack(pop)

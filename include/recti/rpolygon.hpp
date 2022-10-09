@@ -131,12 +131,12 @@ namespace recti {
         const auto botmost = *std::min_element(first, last, upward);
         const auto topmost = *std::max_element(first, last, upward);
         const auto is_anticlockwise = topmost.xcoord() >= botmost.xcoord();
-        auto r2l
+        auto t2b
             = [&botmost](const auto &elem) -> bool { return elem.xcoord() >= botmost.xcoord(); };
-        auto l2r
+        auto b2t
             = [&botmost](const auto &elem) -> bool { return elem.xcoord() <= botmost.xcoord(); };
-        const auto middle = is_anticlockwise ? std::partition(first, last, std::move(r2l))
-                                             : std::partition(first, last, std::move(l2r));
+        const auto middle = is_anticlockwise ? std::partition(first, last, std::move(t2b))
+                                             : std::partition(first, last, std::move(b2t));
         std::sort(first, middle, std::move(upward));
         std::sort(middle, last, std::move(downward));
         return is_anticlockwise;

@@ -13,13 +13,13 @@ namespace recti {
      * @param[in] scale
      * @return unsigned
      */
-    inline auto vdc(unsigned k, unsigned base = 2, unsigned scale = 10) noexcept -> unsigned {
+    inline auto vdc(unsigned num, unsigned base = 2, unsigned scale = 10) noexcept -> unsigned {
         auto vdc = 0U;
         auto factor = unsigned(std::pow(base, scale));
-        while (k != 0) {
+        while (num != 0) {
+            auto remainder = num % base;
             factor /= base;
-            auto remainder = k % base;
-            k /= base;
+            num /= base;
             vdc += remainder * factor;
         }
         return vdc;

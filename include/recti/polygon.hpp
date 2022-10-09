@@ -106,9 +106,10 @@ namespace recti {
 
         auto max_pt = *std::max_element(first, last, dir);
         auto min_pt = *std::min_element(first, last, dir);
-        auto d = max_pt - min_pt;
-        auto middle
-            = std::partition(first, last, [&](const auto &a) { return d.cross(a - min_pt) <= 0; });
+        auto displace = max_pt - min_pt;
+        auto middle = std::partition(first, last, [&displace, &min_pt](const auto &elem) -> bool {
+            return displace.cross(elem - min_pt) <= 0;
+        });
         std::sort(first, middle, dir);
         std::sort(middle, last, dir);
         std::reverse(middle, last);
@@ -121,8 +122,10 @@ namespace recti {
      * @param[in] first
      * @param[in] last
      */
-    template <typename FwIter> inline void create_xmono_polygon(FwIter &&first, FwIter &&last) {
-        return create_mono_polygon(first, last, std::less<>());
+    template <typename FwIter> inline auto create_xmono_polygon(FwIter &&first, FwIter &&last) -> void {
+        return create_mono_polygon(first, last, [](const auto &lhs, const auto &rhs) -> bool {
+            return std::tie(lhs.xcoord(), lhs.ycoord()) < std::tie(rhs.xcoord(), rhs.ycoord());
+        });
     }
 
     /**
@@ -132,9 +135,9 @@ namespace recti {
      * @param[in] first
      * @param[in] last
      */
-    template <typename FwIter> inline void create_ymono_polygon(FwIter &&first, FwIter &&last) {
-        return create_mono_polygon(first, last, [](const auto &a, const auto &b) {
-            return std::tie(a.ycoord(), a.xcoord()) < std::tie(b.ycoord(), b.xcoord());
+    template <typename FwIter> inline auto create_ymono_polygon(FwIter &&first, FwIter &&last) -> void {
+        return create_mono_polygon(first, last, [](const auto &lhs, const auto &rhs) -> bool {
+            return std::tie(lhs.ycoord(), lhs.xcoord()) < std::tie(rhs.ycoord(), rhs.xcoord());
         });
     }
 
@@ -158,25 +161,26 @@ namespace recti {
      * @return false
      */
     template <typename T>
-    inline auto point_in_polygon(gsl::span<const Point<T>> S, const Point<T> &q) -> bool {
-        auto c = false;
-        auto p0 = S.back();
-        for (auto &&p1 : S) {
-            if ((p1.ycoord() <= q.ycoord() && q.ycoord() < p0.ycoord()) || (p0.ycoord() <= q.ycoord() && q.ycoord() < p1.ycoord())) {
-                auto d = (q - p0).cross(p1 - p0);
-                if (p1.ycoord() > p0.ycoord()) {
-                    if (d < 0) {
-                        c = !c;
+    inline auto point_in_polygon(gsl::span<const Point<T>> pointset, const Point<T> &ptq) -> bool {
+        auto res = false;
+        auto pt0 = pointset.back();
+        for (auto &&pt1 : pointset) {
+            if ((pt1.ycoord() <= ptq.ycoord() && ptq.ycoord() < pt0.ycoord())
+                || (pt0.ycoord() <= ptq.ycoord() && ptq.ycoord() < pt1.ycoord())) {
+                auto det = (ptq - pt0).cross(pt1 - pt0);
+                if (pt1.ycoord() > pt0.ycoord()) {
+                    if (det < 0) {
+                        res = !res;
                     }
                 } else {  // v1.ycoord() < v0.ycoord()
-                    if (d > 0) {
-                        c = !c;
+                    if (det > 0) {
+                        res = !res;
                     }
                 }
             }
-            p0 = p1;
+            pt0 = pt1;
         }
-        return c;
+        return res;
     }
 
     /**
@@ -187,10 +191,10 @@ namespace recti {
      * @return true
      * @return false
      */
-    template <typename T> inline auto polygon_is_clockwise(gsl::span<const Point<T>> S) -> bool {
-        auto it1 = std::min_element(S.begin(), S.end());
-        auto it0 = it1 != S.begin() ? std::prev(it1) : S.end() - 1;
-        auto it2 = std::next(it1) != S.end() ? std::next(it1) : S.begin();
+    template <typename T> inline auto polygon_is_clockwise(gsl::span<const Point<T>> pointset) -> bool {
+        auto it1 = std::min_element(pointset.begin(), pointset.end());
+        auto it0 = it1 != pointset.begin() ? std::prev(it1) : std::prev(pointset.end());
+        auto it2 = std::next(it1) != pointset.end() ? std::next(it1) : pointset.begin();
         return (*it1 - *it0).cross(*it2 - *it1) < 0;
     }
 

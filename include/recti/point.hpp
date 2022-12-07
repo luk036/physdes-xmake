@@ -1,8 +1,7 @@
 #pragma once
 
-#include <tuple>        // import std::tie()
-#include <type_traits>  // import std::is_scalar_v
-#include <utility>      // import std::move
+#include <tuple>    // import std::tie()
+#include <utility>  // import std::move
 
 #include "interval.hpp"
 #include "vector2.hpp"
@@ -45,7 +44,8 @@ namespace recti {
          * @param[in] xcoord
          * @param[in] ycoord
          */
-        constexpr Point(T1 &&xcoord, T2 &&ycoord) noexcept : _x{std::move(xcoord)}, _y{std::move(ycoord)} {}
+        constexpr Point(T1 &&xcoord, T2 &&ycoord) noexcept
+            : _x{std::move(xcoord)}, _y{std::move(ycoord)} {}
 
         /**
          * @brief Construct a new Point object
@@ -266,7 +266,9 @@ namespace recti {
          * @param[in] alpha
          * @return Point
          */
-        friend constexpr auto operator+(Point lhs, const T1 &alpha) -> Point { return lhs += alpha; }
+        friend constexpr auto operator+(Point lhs, const T1 &alpha) -> Point {
+            return lhs += alpha;
+        }
 
         /**
          * @brief Substract
@@ -275,7 +277,9 @@ namespace recti {
          * @param[in] alpha
          * @return Point
          */
-        friend constexpr auto operator-(Point lhs, const T1 &alpha) -> Point { return lhs -= alpha; }
+        friend constexpr auto operator-(Point lhs, const T1 &alpha) -> Point {
+            return lhs -= alpha;
+        }
 
         /**
          * @brief Different
@@ -286,7 +290,8 @@ namespace recti {
         constexpr auto operator-(const Self &other) const {
             auto xcoord = this->xcoord() - other.xcoord();
             auto ycoord = this->ycoord() - other.ycoord();
-            return Vector2<decltype(xcoord), decltype(ycoord)>{std::move(xcoord), std::move(ycoord)};
+            return Vector2<decltype(xcoord), decltype(ycoord)>{std::move(xcoord),
+                                                               std::move(ycoord)};
         }
 
         /**
@@ -318,7 +323,8 @@ namespace recti {
          */
         template <typename U1, typename U2>  //
         [[nodiscard]] constexpr auto overlaps(const Point<U1, U2> &other) const -> bool {
-            return overlap(this->xcoord(), other.xcoord()) && overlap(this->ycoord(), other.ycoord());
+            return overlap(this->xcoord(), other.xcoord())
+                   && overlap(this->ycoord(), other.ycoord());
         }
 
         /**
@@ -348,7 +354,8 @@ namespace recti {
          */
         template <typename U1, typename U2>  //
         [[nodiscard]] constexpr auto contains(const Point<U1, U2> &other) const -> bool {
-            return contain(this->xcoord(), other.xcoord()) && contain(this->ycoord(), other.ycoord());
+            return contain(this->xcoord(), other.xcoord())
+                   && contain(this->ycoord(), other.ycoord());
         }
 
         /**
@@ -362,7 +369,8 @@ namespace recti {
          */
         template <typename U1, typename U2>  //
         [[nodiscard]] constexpr auto min_dist_with(const Point<U1, U2> &other) const {
-            return min_dist(this->xcoord(), other.xcoord()) + min_dist(this->ycoord(), other.ycoord());
+            return min_dist(this->xcoord(), other.xcoord())
+                   + min_dist(this->ycoord(), other.ycoord());
         }
 
         /**
@@ -401,7 +409,7 @@ namespace recti {
             return out;
         }
 
-    protected:
+      protected:
         /**
          * @brief
          *
@@ -415,7 +423,6 @@ namespace recti {
          * @return const T2&
          */
         [[nodiscard]] constexpr auto get_ycoord() -> T2 & { return this->_y; }
-
     };
 #pragma pack(pop)
 

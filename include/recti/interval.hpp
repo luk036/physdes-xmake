@@ -2,7 +2,8 @@
 
 #include <algorithm>  // import std::min, std::max
 #include <cassert>
-#include <utility>  // import std::move
+#include <type_traits>  // import std::is_scalar_v
+#include <utility>      // import std::move
 
 namespace recti {
 
@@ -128,9 +129,7 @@ namespace recti {
          * @param[in] upper
          */
         constexpr Interval(T &&lower, T &&upper) noexcept
-            : _lb{std::move(lower)}, _ub{std::move(upper)} {
-            assert(!(_ub < _lb));
-        }
+            : _lb{std::move(lower)}, _ub{std::move(upper)} {}
 
         /**
          * @brief Construct a new Interval object
@@ -138,9 +137,7 @@ namespace recti {
          * @param[in] lower
          * @param[in] upper
          */
-        constexpr Interval(const T &lower, const T &upper) : _lb{lower}, _ub{upper} {
-            assert(!(_ub < _lb));
-        }
+        constexpr Interval(const T &lower, const T &upper) : _lb{lower}, _ub{upper} {}
 
         /**
          * @brief Construct a new Interval object
@@ -409,7 +406,7 @@ namespace recti {
          * @param[in] alpha
          * @return interval
          */
-        template <typename U> friend constexpr auto operator-(const Interval& rhs, const U &alpha)
+        template <typename U> friend constexpr auto operator-(const Interval &rhs, const U &alpha)
             -> Interval {
             auto lower = rhs.lb() - alpha;
             auto upper = rhs.ub() - alpha;
@@ -526,7 +523,8 @@ namespace recti {
          * @param[in] I
          * @return Stream&
          */
-        template <class Stream> friend auto operator<<(Stream &out, const Interval &intvl) -> Stream & {
+        template <class Stream> friend auto operator<<(Stream &out, const Interval &intvl)
+            -> Stream & {
             out << "[" << intvl.lb() << ", " << intvl.ub() << "]";
             return out;
         }

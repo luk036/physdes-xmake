@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <gsl/span>
+#include <utility> // for std::pair
 #include <vector>
 
 #include "recti.hpp"
@@ -91,25 +92,46 @@ public:
  * @return true
  * @return false
  */
-template <typename FwIter>
-inline auto create_xmono_rpolygon(FwIter &&first, FwIter &&last) -> bool {
+template <typename FwIter, typename KeyFn>
+inline auto create_mono_rpolygon(FwIter &&first, FwIter &&last, KeyFn &&dir)
+    -> bool {
   assert(first != last);
 
-  const auto leftmost = *std::min_element(first, last);
-  const auto rightmost = *std::max_element(first, last);
-  const auto is_anticlockwise = rightmost.ycoord() <= leftmost.ycoord();
-  auto r2l = [&leftmost](const auto &elem) -> bool {
-    return elem.ycoord() <= leftmost.ycoord();
+  // Use x-monotone as model
+  auto leftward = [&dir](const auto &rhs, const auto &lhs) -> bool {
+    return dir(rhs) < dir(lhs);
   };
-  auto l2r = [&leftmost](const auto &elem) -> bool {
-    return elem.ycoord() >= leftmost.ycoord();
+  const auto leftmost = *std::min_element(first, last, leftward);
+  const auto rightmost = *std::max_element(first, last, leftward);
+  const auto is_anticw = dir(rightmost).second <= dir(leftmost).second;
+  auto r2l = [&leftmost, &dir](const auto &elem) -> bool {
+    return dir(elem).second <= dir(leftmost).second;
   };
-  const auto middle = is_anticlockwise
-                          ? std::partition(first, last, std::move(r2l))
-                          : std::partition(first, last, std::move(l2r));
-  std::sort(first, middle);
-  std::sort(middle, last, std::greater<>()); // in which standard?
-  return is_anticlockwise;
+  auto l2r = [&leftmost, &dir](const auto &elem) -> bool {
+    return dir(elem).second >= dir(leftmost).second;
+  };
+  const auto middle = is_anticw ? std::partition(first, last, std::move(r2l))
+                                : std::partition(first, last, std::move(l2r));
+  std::sort(first, middle, leftward);
+  std::sort(middle, last, std::move(leftward));
+  std::reverse(middle, last);
+  return is_anticw; // is_clockwise if y-monotone
+}
+
+/**
+ * @brief Create a xmono RPolygon object
+ *
+ * @tparam FwIter
+ * @param[in] first
+ * @param[in] last
+ * @return true
+ * @return false
+ */
+template <typename FwIter>
+inline auto create_xmono_rpolygon(FwIter &&first, FwIter &&last) -> bool {
+  return create_mono_rpolygon(first, last, [](const auto &pt) {
+    return std::pair(pt.xcoord(), pt.ycoord());
+  });
 }
 
 /**
@@ -123,31 +145,9 @@ inline auto create_xmono_rpolygon(FwIter &&first, FwIter &&last) -> bool {
  */
 template <typename FwIter>
 inline auto create_ymono_rpolygon(FwIter &&first, FwIter &&last) -> bool {
-  assert(first != last);
-
-  auto upward = [](const auto &rhs, const auto &lhs) -> bool {
-    return std::tie(rhs.ycoord(), rhs.xcoord()) <
-           std::tie(lhs.ycoord(), lhs.xcoord());
-  };
-  auto downward = [](const auto &rhs, const auto &lhs) -> bool {
-    return std::tie(rhs.ycoord(), rhs.xcoord()) >
-           std::tie(lhs.ycoord(), lhs.xcoord());
-  };
-  const auto botmost = *std::min_element(first, last, upward);
-  const auto topmost = *std::max_element(first, last, upward);
-  const auto is_anticlockwise = topmost.xcoord() >= botmost.xcoord();
-  auto t2b = [&botmost](const auto &elem) -> bool {
-    return elem.xcoord() >= botmost.xcoord();
-  };
-  auto b2t = [&botmost](const auto &elem) -> bool {
-    return elem.xcoord() <= botmost.xcoord();
-  };
-  const auto middle = is_anticlockwise
-                          ? std::partition(first, last, std::move(t2b))
-                          : std::partition(first, last, std::move(b2t));
-  std::sort(first, middle, std::move(upward));
-  std::sort(middle, last, std::move(downward));
-  return is_anticlockwise;
+  return create_mono_rpolygon(first, last, [](const auto &pt) {
+    return std::pair(pt.ycoord(), pt.xcoord());
+  });
 }
 
 /**
@@ -163,20 +163,20 @@ inline void create_test_rpolygon(FwIter &&first, FwIter &&last) {
   assert(first != last);
 
   auto upwd = [](const auto &rhs, const auto &lhs) -> bool {
-    return std::tie(rhs.ycoord(), rhs.xcoord()) <
-           std::tie(lhs.ycoord(), lhs.xcoord());
+    return std::pair(rhs.ycoord(), rhs.xcoord()) <
+           std::pair(lhs.ycoord(), lhs.xcoord());
   };
   auto down = [](const auto &rhs, const auto &lhs) -> bool {
-    return std::tie(rhs.ycoord(), rhs.xcoord()) >
-           std::tie(lhs.ycoord(), lhs.xcoord());
+    return std::pair(rhs.ycoord(), rhs.xcoord()) >
+           std::pair(lhs.ycoord(), lhs.xcoord());
   };
   auto left = [](const auto &rhs, const auto &lhs) {
-    return std::tie(rhs.xcoord(), rhs.ycoord()) <
-           std::tie(lhs.xcoord(), lhs.ycoord());
+    return std::pair(rhs.xcoord(), rhs.ycoord()) <
+           std::pair(lhs.xcoord(), lhs.ycoord());
   };
   auto right = [](const auto &rhs, const auto &lhs) {
-    return std::tie(rhs.xcoord(), rhs.ycoord()) >
-           std::tie(lhs.xcoord(), lhs.ycoord());
+    return std::pair(rhs.xcoord(), rhs.ycoord()) >
+           std::pair(lhs.xcoord(), lhs.ycoord());
   };
 
   auto min_pt = *std::min_element(first, last, upwd);

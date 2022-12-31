@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <gsl/span>
+#include <utility> // for std::pair
 #include <vector>
 
 #include "recti.hpp"
@@ -128,8 +129,8 @@ template <typename FwIter>
 inline auto create_xmono_polygon(FwIter &&first, FwIter &&last) -> void {
   return create_mono_polygon(first, last,
                              [](const auto &lhs, const auto &rhs) -> bool {
-                               return std::tie(lhs.xcoord(), lhs.ycoord()) <
-                                      std::tie(rhs.xcoord(), rhs.ycoord());
+                               return std::pair(lhs.xcoord(), lhs.ycoord()) <
+                                      std::pair(rhs.xcoord(), rhs.ycoord());
                              });
 }
 
@@ -144,8 +145,8 @@ template <typename FwIter>
 inline auto create_ymono_polygon(FwIter &&first, FwIter &&last) -> void {
   return create_mono_polygon(first, last,
                              [](const auto &lhs, const auto &rhs) -> bool {
-                               return std::tie(lhs.ycoord(), lhs.xcoord()) <
-                                      std::tie(rhs.ycoord(), rhs.xcoord());
+                               return std::pair(lhs.ycoord(), lhs.xcoord()) <
+                                      std::pair(rhs.ycoord(), rhs.xcoord());
                              });
 }
 

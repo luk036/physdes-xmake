@@ -1,7 +1,8 @@
 #pragma once
 
-#include <algorithm> // import std::min, std::max
+// #include <algorithm> // import std::min, std::max
 #include <cassert>
+#include <cmath>
 #include <type_traits> // import std::is_scalar_v
 #include <utility>     // import std::move
 
@@ -476,8 +477,10 @@ public:
     if constexpr (std::is_scalar<U>::value) {
       return Interval<U>{other, other};
     } else {
-      return Interval<T>{std::max(this->lb(), T(other.lb())),
-                         std::min(this->ub(), T(other.ub()))};
+      // return Interval<T>{std::max(this->lb(), T(other.lb())),
+      //                    std::min(this->ub(), T(other.ub()))};
+      return Interval<T>{this->lb() > other.lb() ? this->lb() : T(other.lb()),
+                         this->ub() < other.ub() ? this->ub() : T(other.ub())};
     }
   }
 

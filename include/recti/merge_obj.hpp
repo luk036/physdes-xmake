@@ -1,6 +1,6 @@
 #pragma once
 
-#include <algorithm> // import std::min, std::max
+// #include <algorithm> // import std::min, std::max
 #include <cassert>
 #include <utility> // import std::move
 
@@ -175,6 +175,9 @@ public:
   min_dist_with(const MergeObj<U1, U2> &other) const {
     return std::max(min_dist(this->xcoord(), other.xcoord()),
                     min_dist(this->ycoord(), other.ycoord()));
+    // auto min_dist_x = min_dist(this->xcoord(), other.xcoord());
+    // auto min_dist_y = min_dist(this->ycoord(), other.ycoord());
+    // return min_dist_x > min_dist_y ? min_dist_x : min_dist_y;
   }
 
   template <typename R> //

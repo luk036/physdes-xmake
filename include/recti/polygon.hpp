@@ -106,8 +106,9 @@ template <typename FwIter, typename Compare>
 inline void create_mono_polygon(FwIter &&first, FwIter &&last, Compare &&dir) {
   assert(first != last);
 
-  auto max_pt = *std::max_element(first, last, dir);
-  auto min_pt = *std::min_element(first, last, dir);
+  auto [min, max] = std::minmax_element(first, last, dir);
+  auto min_pt = *min;
+  auto max_pt = *max;
   auto displace = max_pt - min_pt;
   auto middle = std::partition(first, last,
                                [&displace, &min_pt](const auto &elem) -> bool {

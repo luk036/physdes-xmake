@@ -101,8 +101,9 @@ inline auto create_mono_rpolygon(FwIter &&first, FwIter &&last, KeyFn &&dir)
   auto leftward = [&dir](const auto &rhs, const auto &lhs) -> bool {
     return dir(rhs) < dir(lhs);
   };
-  const auto leftmost = *std::min_element(first, last, leftward);
-  const auto rightmost = *std::max_element(first, last, leftward);
+  auto [min, max] = std::minmax_element(first, last, leftward);
+  const auto leftmost = *min;
+  const auto rightmost = *max;
   const auto is_anticw = dir(rightmost).second <= dir(leftmost).second;
   auto r2l = [&leftmost, &dir](const auto &elem) -> bool {
     return dir(elem).second <= dir(leftmost).second;
@@ -179,8 +180,9 @@ inline void create_test_rpolygon(FwIter &&first, FwIter &&last) {
            std::pair(lhs.xcoord(), lhs.ycoord());
   };
 
-  auto min_pt = *std::min_element(first, last, upwd);
-  auto max_pt = *std::max_element(first, last, upwd);
+  auto [min, max] = std::minmax_element(first, last, upwd);
+  auto min_pt = *min;
+  auto max_pt = *max;
   auto d_x = max_pt.xcoord() - min_pt.xcoord();
   auto d_y = max_pt.ycoord() - min_pt.ycoord();
   auto middle = std::partition(

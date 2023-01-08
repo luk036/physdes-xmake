@@ -19,20 +19,20 @@ struct Interval {
 };
 
 template <typename FwIter, typename Compare>
-auto find_equiv(FwIter start, FwIter stop, Compare &&cmp = std::less<>())
+auto find_equiv(FwIter first, FwIter last, Compare &&cmp)
     -> std::pair<FwIter, FwIter> {
-  auto cmp2 = [&cmp](FwIter itr1, FwIter itr2) -> bool {
-    return cmp(*itr1, *itr2);
+  auto cmp2 = [&cmp](FwIter iter1, FwIter iter2) -> bool {
+    return cmp(*iter1, *iter2);
   };
   auto S = std::set<FwIter, decltype(cmp2)>(cmp2); // initially empty
-  auto res = std::pair<FwIter, FwIter>(stop, stop);
-  for (auto itr = start; itr != stop; ++itr) {
-    auto itr2 = S.find(itr); // <
-    if (itr2 != S.end()) {
-      res = std::make_pair(itr, *itr2);
+  auto res = std::make_pair(last, last);
+  for (auto iter = first; iter != last; ++iter) {
+    auto iter2 = S.find(iter); // <
+    if (iter2 != S.end()) {
+      res = std::make_pair(iter, *iter2);
       break;
     } else {
-      S.insert(itr);
+      S.insert(iter);
     }
   }
   return res;

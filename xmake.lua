@@ -1,7 +1,8 @@
 add_rules("mode.debug", "mode.release", "mode.coverage")
 add_requires("fmt 7.x", {alias = "fmt"})
-add_requires("conan::doctest/2.4.8", {alias = "doctest"})
-add_requires("conan::ms-gsl/3.1.0", {alias = "ms-gsl"})
+add_requires("doctest", {alias = "doctest"})
+-- add_requires("conan::ms-gsl/3.1.0", {alias = "ms-gsl"})
+add_requires("microsoft-gsl", {alias = "ms-gsl"})
 -- add_requires("apt::libboost-dev", {alias = "boost"})
 set_languages("c++17")
 

@@ -7,7 +7,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         version: [latest, branch@master, branch@dev]
 
     runs-on: ${{ matrix.os }}
@@ -17,11 +17,11 @@ jobs:
       - uses: xmake-io/github-action-setup-xmake@master
         with:
           xmake-version: ${{ matrix.version }}
-      - name: Install Conan
-        id: conan
-        uses: turtlebrowser/get-conan@main
-      - name: Conan version
-        run: echo "${{ steps.conan.outputs.version }}"
+      # - name: Install Conan
+      #   id: conan
+      #   uses: turtlebrowser/get-conan@main
+      # - name: Conan version
+      #   run: echo "${{ steps.conan.outputs.version }}"
       - name: Run tests
         run: |
           xmake --version

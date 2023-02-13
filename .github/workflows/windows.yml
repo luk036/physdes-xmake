@@ -1,4 +1,4 @@
-name: Ubuntu/MacOS Test
+name: Windows Test
 
 on:
   - push
@@ -7,7 +7,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [windows-latest]
         version: [latest, branch@master, branch@dev]
 
     runs-on: ${{ matrix.os }}

@@ -10,6 +10,7 @@ set_languages("c++17")
 target("Recti")
     set_kind("static")
     add_includedirs("include", {public = true})
+    add_files("src/*.cpp")
     add_packages("ms-gsl")
     set_warnings("all", "error")
 

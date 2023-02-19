@@ -1,1 +1,3 @@
-# 𓊍 Physical Design C++ Code with xmake
+# physdes-xmake
+
+𓊍 Physical Design with XMake

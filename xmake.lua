@@ -6,6 +6,10 @@ add_requires("microsoft-gsl", {alias = "ms-gsl"})
 -- add_requires("apt::libboost-dev", {alias = "boost"})
 set_languages("c++17")
 
+if is_mode("coverage") then
+    add_cxflags("-ftest-coverage", "-fprofile-arcs", {force = true})
+end
+
 -- header only package
 -- target("Recti")
 --     set_kind("static")

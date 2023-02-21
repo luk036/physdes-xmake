@@ -1,0 +1,39 @@
+name: coverage test
+
+on:
+  - push
+
+env:
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        version: [latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: xmake-io/github-action-setup-xmake@master
+        with:
+          xmake-version: ${{ matrix.version }}
+
+      - name: Install dependency
+        run: sudo apt-get install lcov
+
+      - name: Run tests
+        run: |
+          xmake --version
+          xmake f -m coverage -y
+          xmake
+          xmake run test_recti
+
+      - name: Collect code coverage
+        run: |
+          lcov --directory . --capture --output-file coverage.info # capture coverage info
+          lcov --remove coverage.info '/usr/*' 'standalone/*' 'bench/*' --output-file coverage.info # filter out system
+          lcov --list coverage.info #debug info
+          bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"

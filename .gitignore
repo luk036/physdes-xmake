@@ -2,6 +2,7 @@
 .xmake/
 build/
 .cache/
+.trunk/
 compile_commands.json
 
 # MacOS Cache

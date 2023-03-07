@@ -8,26 +8,46 @@
 
 namespace recti {
 
-/**
- * @brief overlap
- *
- * @tparam U1
- * @tparam U2
- * @param lhs
- * @param rhs
- * @return true
- * @return false
- */
 template <typename U1, typename U2> //
-inline constexpr auto overlap(const U1 &lhs, const U2 &rhs) -> bool {
-  if constexpr (!std::is_scalar<U1>::value) {
-    return lhs.overlaps(rhs);
-  } else if constexpr (!std::is_scalar<U2>::value) {
-    return rhs.overlaps(lhs);
-  } else {
-    return lhs == rhs;
-  }
+inline constexpr auto overlap(const U1 &lhs, const U2 &rhs) ->
+    typename std::enable_if<!std::is_scalar<U1>::value, bool>::type {
+  return lhs.overlaps(rhs);
 }
+
+template <typename U1, typename U2> //
+inline constexpr auto overlap(const U1 &lhs, const U2 &rhs) ->
+    typename std::enable_if<
+        std::is_scalar<U1>::value && !std::is_scalar<U2>::value, bool>::type {
+  return rhs.overlaps(lhs);
+}
+
+template <typename U1, typename U2> //
+inline constexpr auto overlap(const U1 &lhs, const U2 &rhs) ->
+    typename std::enable_if<
+        std::is_scalar<U1>::value && std::is_scalar<U2>::value, bool>::type {
+  return lhs == rhs;
+}
+
+// /**
+//  * @brief overlap
+//  *
+//  * @tparam U1
+//  * @tparam U2
+//  * @param lhs
+//  * @param rhs
+//  * @return true
+//  * @return false
+//  */
+// template <typename U1, typename U2> //
+// inline constexpr auto overlap(const U1 &lhs, const U2 &rhs) -> bool {
+//   if constexpr (!std::is_scalar<U1>::value) {
+//     return lhs.overlaps(rhs);
+//   } else if constexpr (!std::is_scalar<U2>::value) {
+//     return rhs.overlaps(lhs);
+//   } else {
+//     return lhs == rhs;
+//   }
+// }
 
 /**
  * @brief contain

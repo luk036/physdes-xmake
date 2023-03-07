@@ -10,6 +10,11 @@ if is_mode("coverage") then
     add_cxflags("-ftest-coverage", "-fprofile-arcs", {force = true})
 end
 
+if is_plat("linux") then
+    set_warnings("all", "error")
+    add_cxflags("-Wconversion", {force = true})
+end
+
 -- header only package
 -- target("Recti")
 --     set_kind("static")
@@ -24,7 +29,6 @@ target("test_recti")
     add_includedirs("include", {public = true})
     add_files("tests/*.cpp")
     add_packages("fmt", "doctest", "ms-gsl")
-    set_warnings("all", "error")
 
 --
 -- If you want to known more usage about xmake, please see https://xmake.io
